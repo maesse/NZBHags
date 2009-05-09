@@ -18,13 +18,14 @@ namespace NZBHags
         public MainGUI()
         {
             InitializeComponent();
-            handler = new QueueHandler();
+            handler = QueueHandler.Instance;
             
-            server = NewsServer.Load("newshosting.ini", handler);
+            //server = NewsServer.Load("server.ini");
+            server = new NewsServer();
             if (server == null)
             {
                 // Create new..
-                server = new NewsServer(handler);
+                server = new NewsServer();
             }
             
         }
@@ -115,7 +116,10 @@ namespace NZBHags
         // Timer updates
         private void UpdateUI(object sender, EventArgs e)
         {
+            // Refresh connection view
             dataGridView1.Refresh();
+
+            // Append logs
             lock (typeof(Logging))
             {
                 foreach (string str in Logging.logList)
@@ -137,10 +141,19 @@ namespace NZBHags
             }
         }
 
+        // open about dialog
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AboutBox1 about = new AboutBox1();
             about.Show();
+        }
+
+        // Called on formClosing, shuts down gracefully
+        private void Shutdown(object sender, FormClosingEventArgs e)
+        {
+            server.Disconnect();
+            YDecoder.Instance.Shutdown();
+            WriteCache.Instance.Shutdown();
         }
     }
 }

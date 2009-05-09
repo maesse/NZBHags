@@ -13,13 +13,13 @@ namespace NZBHags
         static readonly YDecoder instance = new YDecoder();
         System.Text.ASCIIEncoding enc = new System.Text.ASCIIEncoding();
         private Queue segments;
-        public bool keepAlive { get; set; } 
+        public bool keepRunning { get; set; } 
         private int[] special = {0, 9, 10, 13, 27, 32, 46, 61};
 
         YDecoder()
         {
             segments = new Queue();
-            keepAlive = true;
+            keepRunning = true;
 
             ThreadStart job = new ThreadStart(Run);
             Thread thread = new Thread(job);
@@ -202,7 +202,7 @@ namespace NZBHags
             bool sleep = false;
             Segment segment = null;
 
-            while (keepAlive)
+            while (keepRunning)
             {
                 // Only hold lock for as little time as necessary
                 lock (segments)
@@ -240,6 +240,23 @@ namespace NZBHags
                 return ret.Substring(0, i).Trim();
             }
             return null;
+        }
+
+        // Finishes decoding and returns
+        public void Shutdown()
+        {
+            keepRunning = false;
+            lock (segments)
+            {
+                foreach (Segment seg in segments)
+                {
+                    ProcessSegment(seg);
+                }
+                segments.Clear();
+                System.Console.WriteLine("(YDecoder) Shutting down...");
+                return;
+            }
+            
         }
 
         // Singleton implementation

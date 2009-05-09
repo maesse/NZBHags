@@ -23,6 +23,7 @@ namespace NZBHags
 
         private List<WriteStream> streams; // stream cache
         private Thread thread;
+        private bool keepRunning = true;
 
         struct WriteStream
         {
@@ -42,11 +43,34 @@ namespace NZBHags
             thread.Start();
         }
 
-        private AsyncCallback SegCompleteCallback(Segment seg)
+        //private AsyncCallback SegCompleteCallback(Segment seg)
+        //{
+        //    //seg.data = null;
+        //    AsyncCallback call = new AsyncCallback(seg.CleanSegment);
+        //    return call;
+        //}
+
+        // Writes everything out and return
+        public void Shutdown()
         {
-            //seg.data = null;
-            AsyncCallback call = new AsyncCallback(seg.CleanSegment);
-            return call;
+            keepRunning = false;
+            lock (segments)
+            {
+                foreach (Segment seg in segments)
+                {
+                    if (!seg.tempsaved)
+                    {
+                        saveSegment(seg);
+                    }
+                }
+            }
+            lock (streams)
+            {
+                foreach (WriteStream ws in streams)
+                {
+                    ws.stream.Close();
+                }
+            }
         }
 
         
@@ -142,7 +166,7 @@ namespace NZBHags
         // Updates cache
         private void Update()
         {
-            while (true)
+            while (keepRunning)
             {
                 List<Segment> toremove = new List<Segment>();
                 lock (newSegments)
@@ -187,16 +211,6 @@ namespace NZBHags
             }
         }
 
-        public void Close()
-        {
-            foreach(Segment segment in segments) {
-                // TODO: save to disk
-            }
-            foreach (WriteStream ws in streams)
-            {
-                ws.stream.Close();
-            }
-        }
 
         
 

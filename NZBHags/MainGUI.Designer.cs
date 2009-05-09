@@ -47,22 +47,22 @@
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.keepAliveDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.idleDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.connectedDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.nNTPConnectionBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nNTPConnectionBindingSource1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nNTPConnectionBindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -203,7 +203,7 @@
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
             this.toolStripButton1.Size = new System.Drawing.Size(52, 52);
-            this.toolStripButton1.Text = "toolStripButton1";
+            this.toolStripButton1.Text = "Connect/Disconnect";
             this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // toolStripButton2
@@ -214,7 +214,7 @@
             this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton2.Name = "toolStripButton2";
             this.toolStripButton2.Size = new System.Drawing.Size(52, 52);
-            this.toolStripButton2.Text = "toolStripButton2";
+            this.toolStripButton2.Text = "Open NZB";
             this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
             // dataGridView1
@@ -247,32 +247,6 @@
             this.id.ReadOnly = true;
             this.id.Width = 20;
             // 
-            // keepAliveDataGridViewCheckBoxColumn
-            // 
-            this.keepAliveDataGridViewCheckBoxColumn.DataPropertyName = "keepAlive";
-            this.keepAliveDataGridViewCheckBoxColumn.HeaderText = "keepAlive";
-            this.keepAliveDataGridViewCheckBoxColumn.Name = "keepAliveDataGridViewCheckBoxColumn";
-            this.keepAliveDataGridViewCheckBoxColumn.ReadOnly = true;
-            // 
-            // idleDataGridViewCheckBoxColumn
-            // 
-            this.idleDataGridViewCheckBoxColumn.DataPropertyName = "idle";
-            this.idleDataGridViewCheckBoxColumn.HeaderText = "idle";
-            this.idleDataGridViewCheckBoxColumn.Name = "idleDataGridViewCheckBoxColumn";
-            this.idleDataGridViewCheckBoxColumn.ReadOnly = true;
-            // 
-            // connectedDataGridViewCheckBoxColumn
-            // 
-            this.connectedDataGridViewCheckBoxColumn.DataPropertyName = "Connected";
-            this.connectedDataGridViewCheckBoxColumn.HeaderText = "Connected";
-            this.connectedDataGridViewCheckBoxColumn.Name = "connectedDataGridViewCheckBoxColumn";
-            this.connectedDataGridViewCheckBoxColumn.ReadOnly = true;
-            // 
-            // nNTPConnectionBindingSource1
-            // 
-            this.nNTPConnectionBindingSource1.AllowNew = true;
-            this.nNTPConnectionBindingSource1.DataSource = typeof(NZBHags.NNTPConnection);
-            // 
             // timer1
             // 
             this.timer1.Enabled = true;
@@ -299,6 +273,32 @@
             this.splitContainer1.SplitterDistance = 149;
             this.splitContainer1.TabIndex = 5;
             // 
+            // keepAliveDataGridViewCheckBoxColumn
+            // 
+            this.keepAliveDataGridViewCheckBoxColumn.DataPropertyName = "keepAlive";
+            this.keepAliveDataGridViewCheckBoxColumn.HeaderText = "keepAlive";
+            this.keepAliveDataGridViewCheckBoxColumn.Name = "keepAliveDataGridViewCheckBoxColumn";
+            this.keepAliveDataGridViewCheckBoxColumn.ReadOnly = true;
+            // 
+            // idleDataGridViewCheckBoxColumn
+            // 
+            this.idleDataGridViewCheckBoxColumn.DataPropertyName = "idle";
+            this.idleDataGridViewCheckBoxColumn.HeaderText = "idle";
+            this.idleDataGridViewCheckBoxColumn.Name = "idleDataGridViewCheckBoxColumn";
+            this.idleDataGridViewCheckBoxColumn.ReadOnly = true;
+            // 
+            // connectedDataGridViewCheckBoxColumn
+            // 
+            this.connectedDataGridViewCheckBoxColumn.DataPropertyName = "Connected";
+            this.connectedDataGridViewCheckBoxColumn.HeaderText = "Connected";
+            this.connectedDataGridViewCheckBoxColumn.Name = "connectedDataGridViewCheckBoxColumn";
+            this.connectedDataGridViewCheckBoxColumn.ReadOnly = true;
+            // 
+            // nNTPConnectionBindingSource1
+            // 
+            this.nNTPConnectionBindingSource1.AllowNew = true;
+            this.nNTPConnectionBindingSource1.DataSource = typeof(NZBHags.NNTPConnection);
+            // 
             // MainGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -311,6 +311,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainGUI";
             this.Text = "NZBHags";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Shutdown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
@@ -319,10 +320,10 @@
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nNTPConnectionBindingSource1)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.nNTPConnectionBindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

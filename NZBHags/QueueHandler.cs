@@ -6,11 +6,13 @@ using System.Collections;
 
 namespace NZBHags
 {
-    public class QueueHandler
+    public sealed class QueueHandler
     {
+        static readonly QueueHandler instance = new QueueHandler();
         private FileJob currentFileJob;
         public ArrayList collections { get; set; }
-        public QueueHandler()
+        
+        QueueHandler()
         {
             collections = new ArrayList();
         }
@@ -41,6 +43,15 @@ namespace NZBHags
                 }
 
                 return (Segment) currentFileJob.queue.Dequeue();
+            }
+        }
+
+        // Singleton implementation
+        public static QueueHandler Instance
+        {
+            get
+            {
+                return instance;
             }
         }
     }

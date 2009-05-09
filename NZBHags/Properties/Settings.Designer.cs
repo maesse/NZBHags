@@ -58,5 +58,89 @@ namespace NZBHags.Properties {
                 this["tempFolder"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string servername {
+            get {
+                return ((string)(this["servername"]));
+            }
+            set {
+                this["servername"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string serveraddr {
+            get {
+                return ((string)(this["serveraddr"]));
+            }
+            set {
+                this["serveraddr"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string serveruser {
+            get {
+                return ((string)(this["serveruser"]));
+            }
+            set {
+                this["serveruser"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string serverpass {
+            get {
+                return ((string)(this["serverpass"]));
+            }
+            set {
+                this["serverpass"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int serverport {
+            get {
+                return ((int)(this["serverport"]));
+            }
+            set {
+                this["serverport"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int serverconnections {
+            get {
+                return ((int)(this["serverconnections"]));
+            }
+            set {
+                this["serverconnections"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int servertimeout {
+            get {
+                return ((int)(this["servertimeout"]));
+            }
+            set {
+                this["servertimeout"] = value;
+            }
+        }
     }
 }
