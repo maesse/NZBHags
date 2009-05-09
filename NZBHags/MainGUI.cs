@@ -20,13 +20,7 @@ namespace NZBHags
             InitializeComponent();
             handler = QueueHandler.Instance;
             
-            //server = NewsServer.Load("server.ini");
             server = new NewsServer();
-            if (server == null)
-            {
-                // Create new..
-                server = new NewsServer();
-            }
             
         }
 
@@ -34,25 +28,26 @@ namespace NZBHags
         {
             FileCollection nzb = NZBFileHandler.loadFile(filename);
             nzb.queue = NZBFileHandler.genQueue(nzb.files);
-            handler.collections.Add(nzb);
+            QueueHandler.Instance.AddCollection(nzb);
+            flowLayoutPanel1.Controls.Add(new QueueControl(nzb, this));
 
-            // Add to UI
-            TreeNode[] files = new TreeNode[nzb.files.Count];
-            int i = 0;
-            foreach (FileJob file in nzb.files)
-            {
-                TreeNode[] parts = new TreeNode[file.segments.Count];
-                int j = 0;
+            //// Add to UI
+            //TreeNode[] files = new TreeNode[nzb.files.Count];
+            //int i = 0;
+            //foreach (FileJob file in nzb.files)
+            //{
+            //    TreeNode[] parts = new TreeNode[file.segments.Count];
+            //    int j = 0;
 
-                foreach (Segment part in file.segments)
-                {
-                    parts[j] = new TreeNode(string.Format("part({0}), bytes={1}, addr={2}", part.id, part.bytes, part.addr));
-                    j++;
-                }
-                files[i] = new TreeNode("Filename: "+file.subject+" size=" + ((file.size/1024)/1024)+"MB", parts);
-                i++;
-            }
-            treeView1.Nodes.Add(new TreeNode(filename, files));
+            //    foreach (Segment part in file.segments)
+            //    {
+            //        parts[j] = new TreeNode(string.Format("part({0}), bytes={1}, addr={2}", part.id, part.bytes, part.addr));
+            //        j++;
+            //    }
+            //    files[i] = new TreeNode("Filename: "+file.subject+" size=" + ((file.size/1024)/1024)+"MB", parts);
+            //    i++;
+            //}
+            //treeView1.Nodes.Add(new TreeNode(filename, files));
 
         }
 
@@ -113,12 +108,49 @@ namespace NZBHags
             }
         }
 
+        public void remQueue(QueueControl control)
+        {
+            QueueHandler.Instance.removeCollection(control.collection);
+            flowLayoutPanel1.Controls.Remove(control);
+        }
+
+        public void incrQueue(QueueControl control)
+        {
+            
+            //if (control.collection.id + 1 < flowLayoutPanel1.Controls.Count)
+            //{
+                QueueHandler.Instance.setCollectionID(control.collection, control.collection.id++);
+                int index = flowLayoutPanel1.Controls.GetChildIndex(control);
+                flowLayoutPanel1.Controls.SetChildIndex(flowLayoutPanel1.Controls[index++], index);
+                flowLayoutPanel1.Controls.SetChildIndex(control, index++);
+                
+            //}
+        }
+
+        public void decrQueue(QueueControl control)
+        {
+            QueueHandler.Instance.setCollectionID(control.collection, control.collection.id--);
+            int index = flowLayoutPanel1.Controls.GetChildIndex(control);
+            flowLayoutPanel1.Controls.SetChildIndex(flowLayoutPanel1.Controls[index--], index);
+            flowLayoutPanel1.Controls.SetChildIndex(control, index--);
+        }
+
         // Timer updates
         private void UpdateUI(object sender, EventArgs e)
         {
             // Refresh connection view
             dataGridView1.Refresh();
+            if (QueueHandler.Instance.changed)
+            {
+                //flowLayoutPanel1.Controls.Clear();
+                //FileCollection[] coll = QueueHandler.Instance.getCollections();
+                //for (int i = 0; i < coll.Length; i++)
+                //{
+                //    flowLayoutPanel1.Controls.Add(new QueueControl(coll[i]));
+                //}
 
+                QueueHandler.Instance.changed = false;
+            }
             // Append logs
             lock (typeof(Logging))
             {
@@ -155,5 +187,15 @@ namespace NZBHags
             YDecoder.Instance.Shutdown();
             WriteCache.Instance.Shutdown();
         }
+
+        // Queue flowpanel layout
+        private void Layout(object sender, LayoutEventArgs e)
+        {
+            foreach (Control ctrl in ((Control)sender).Controls)
+            {
+                ((QueueControl)ctrl).ResizeInLayoutEvent();
+            }
+        }
+
     }
 }

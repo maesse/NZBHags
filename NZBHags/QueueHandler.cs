@@ -10,11 +10,97 @@ namespace NZBHags
     {
         static readonly QueueHandler instance = new QueueHandler();
         private FileJob currentFileJob;
-        public ArrayList collections { get; set; }
+        private int nextId = 0;
+        public ArrayList collections;
+        public bool changed;
         
         QueueHandler()
         {
             collections = new ArrayList();
+        }
+
+        public void AddCollection(FileCollection collection)
+        {
+            collection.status = CollectionStatus.QUEUED;
+            collection.queue = NZBFileHandler.genQueue(collection.files);
+            collection.id = nextId;
+            nextId++;
+            collections.Add(collection);
+            changed = true;
+        }
+
+        public FileCollection[] getCollections()
+        {
+            FileCollection[] coll = new FileCollection[collections.Count];
+            for (int i = 0; i < nextId; i++)
+            {
+                foreach (FileCollection col in collections)
+                {
+                    if (col.id == i)
+                    {
+                        coll[i] = col;
+                        break;
+                    }
+                }
+            }
+            return coll;
+        }
+
+        public void setCollectionID(FileCollection col, int index)
+        {
+            if (index >= 0 && index < nextId)
+            {
+                if (col.id > index)
+                {
+                    // decrement
+                    foreach (FileCollection collection in collections)
+                    {
+                        if(collection.id == index) {
+                            collection.id++;
+                            break;
+                        }
+                    }
+                    col.id--;
+                }
+                else
+                {
+                    // increment
+                    foreach (FileCollection collection in collections)
+                    {
+                        if (collection.id == index)
+                        {
+                            collection.id--;
+                            break;
+                        }
+                    }
+                    col.id++;
+                }
+            }
+            changed = true;
+        }
+
+        public void removeCollection(FileCollection collection)
+        {
+            if (currentFileJob != null && currentFileJob.parent == collection)
+                currentFileJob = null;
+            if (collection.id != nextId - 1)
+            {
+                for (int i = collection.id + 1; i < nextId; i++)
+                {
+                    foreach (FileCollection col in collections)
+                    {
+                        if (col.id == i)
+                        {
+                            col.id--;
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+                nextId--;
+            collections.Remove(collection);
+            changed = true;
         }
 
         public Segment getNextQueueItem()
@@ -33,11 +119,14 @@ namespace NZBHags
                 else if (currentFileJob.queue.Count == 0)
                 {
                     //currentFileJob.Complete();
-                    if (collections.Count == 0)
-                        return null;
-                    FileCollection coll = (FileCollection)collections[0];
-                    if (coll.queue.Count != 0)
-                        currentFileJob = (FileJob)coll.queue.Dequeue();
+                    if (collections.Count != 0)
+                    {
+                        foreach (FileCollection col in collections)
+                        {
+                            if(col.status != CollectionStatus.PAUSE && col.queue.Count > 0)
+                                currentFileJob = (FileJob)col.queue.Dequeue();
+                        }
+                    }
                     else
                         return null;
                 }

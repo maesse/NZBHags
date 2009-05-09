@@ -46,7 +46,7 @@ namespace NZBHags
             if (!response.Equals("200") && !response.Equals("201"))
             {
                 // abort
-                Logging.Log("Conn({0}): Didn't get expected resonse.. got: {1}", id, response);
+                Logging.Log("(NNTPConnection({0})): Didn't get expected resonse.. got: {1}", id, response);
                 Disconnect();
                 return;
             }
@@ -60,7 +60,7 @@ namespace NZBHags
             Assert(response, "281"); // Ok
 
             idle = true;
-            Logging.Log("Conn({0}): Connected to server.", id);
+            Logging.Log("(NNTPConnection({0})): Connected to server.", id);
         }
         
 
@@ -74,6 +74,7 @@ namespace NZBHags
                 // Check Queuehandler..
                 if ((segment = handler.getNextQueueItem()) != null)
                 {
+                    segment.status = Segment.Status.DOWNLOADING;
                     idle = false;
                     segment.data = RecieveSegment(segment);
                     YDecoder.Instance.DecodeSegment(segment);
@@ -99,50 +100,40 @@ namespace NZBHags
             
             byte[] buffer = new byte[segment.bytes];
             int read = 0;
-            bool finished = false, nl = false;
 
             int chunk;
             try
             {
-                while (!finished)
+                while ((chunk = stream.Read(buffer, read, buffer.Length - read)) > 0 && keepAlive)
                 {
-                    while ((chunk = stream.Read(buffer, read, buffer.Length - read)) > 0 && keepAlive)
-                    {
-                        read += chunk;
+                    read += chunk;
 
-                        if (read == buffer.Length)
+                    if (read == buffer.Length)
+                    {
+                        byte[] newBuffer = new byte[buffer.Length * 2];
+                        Array.Copy(buffer, newBuffer, buffer.Length);
+                        buffer = newBuffer;
+                    }
+                    
+                    // Looks for .\r\n (End of message)
+                    if (read > 2 && buffer[read - 3] == '.' && buffer[read - 2] == '\r' && buffer[read - 1] == '\n')
+                    {
+                        // Check that it is in the beginning of a new line
+                        if (read < 4 || buffer[read - 5] == '\r' && buffer[read - 4] == '\n')
                         {
-                            byte[] newBuffer = new byte[buffer.Length * 2];
-                            Array.Copy(buffer, newBuffer, buffer.Length);
-                            buffer = newBuffer;
-                        }
-                        
-                        if (read > 2 && buffer[read - 3] == '.' && buffer[read - 2] == '\r' && buffer[read - 1] == '\n')
-                        {
-                            if (read > 4)
-                            {
-                                if (buffer[read - 5] == '\r' && buffer[read - 4] == '\n')
-                                {
-                                    finished = true;
-                                    break;
-                                }
-                            }
-                            else {
-                                finished = true;
-                                break;
-                            }
+                            break;
                         }
                     }
                 }
             }
             catch (IOException ex)
             {
-                Logging.Log("(NNTPConnection) IOException: " + ex.ToString());
+                Logging.Log("(NNTPConnection(" + id + ")) IOException: " + ex.ToString());
             }
             byte[] returnarray = new byte[read-3];
             Array.Copy(buffer, returnarray, read-3);
             segment.bytes = read;
-            Logging.Log("SEGMENT: id=" + segment.id + " bytes=" + read);
+            Logging.Log("(NNTPConnection(" + id + ")) SEGMENT Complete: id=" + segment.id + " bytes=" + read);
             return returnarray;
         }
 
@@ -156,7 +147,7 @@ namespace NZBHags
             if (!response.Substring(0, 3).Equals(str))
             {
                 // abort
-                Logging.Log("Could not connect... got message: " + response);
+                Logging.Log("(NNTPConnection(" + id + ")) Could not connect... got message: " + response);
                 Disconnect();
                 return;
             }

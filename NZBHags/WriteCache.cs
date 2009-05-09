@@ -43,16 +43,11 @@ namespace NZBHags
             thread.Start();
         }
 
-        //private AsyncCallback SegCompleteCallback(Segment seg)
-        //{
-        //    //seg.data = null;
-        //    AsyncCallback call = new AsyncCallback(seg.CleanSegment);
-        //    return call;
-        //}
 
         // Writes everything out and return
         public void Shutdown()
         {
+            System.Console.WriteLine("(WriteCache) Shutting down...");
             keepRunning = false;
             lock (segments)
             {
@@ -87,6 +82,7 @@ namespace NZBHags
                     WriteStream ws = (WriteStream)enumer.Current;
                     if (ws.filejob.Equals(seg.parent))
                     {
+                        // Copy from a tempsaved segment
                         if (seg.tempsaved)
                         {
                             FileStream stream = new FileStream(Properties.Settings.Default.tempFolder + "\\" + seg.tempname, FileMode.Open, FileAccess.Read);
@@ -95,6 +91,7 @@ namespace NZBHags
                             stream.Read(buffer, 0, seg.bytes); // May end up blocking if seg.bytes is larger than actual file
                             ws.stream.Write(buffer, 0, buffer.Length);
                             stream.Close();
+                            seg.status = Segment.Status.COMPLETE;
                             seg.parent.saveprogress = seg.id;
                         }
 
@@ -102,7 +99,7 @@ namespace NZBHags
                         {
                             ws.stream.Write(seg.data, 0, seg.bytes);
                             seg.data = null;
-                            //ws.stream.BeginWrite(seg.data, 0, seg.bytes, SegCompleteCallback(seg), null);
+                            seg.status = Segment.Status.COMPLETE;
                             seg.parent.saveprogress = seg.id;
                         }
                         saved = true;
@@ -117,10 +114,8 @@ namespace NZBHags
                             // Remove from collection
                             toremove.Add(ws);
                             seg.parent.complete = true;
-                            cacheSize -= (ulong)seg.bytes;
+                            
                         }
-                        // May conflict with async write
-                       // seg.data = null;
                         break;
                     }
                 }
@@ -138,6 +133,7 @@ namespace NZBHags
                 FileStream stream = new FileStream(seg.parent.outputfilename, FileMode.Append, FileAccess.Write);
                 stream.Write(seg.data, 0, seg.data.Length);
                 seg.data = null;
+                seg.status = Segment.Status.COMPLETE;
                 // Was this the last part?
                 if (seg.id == seg.parent.yparts || seg.parent.yparts == 0)
                 {
@@ -156,8 +152,6 @@ namespace NZBHags
 
                     streams.Add(ws);
                 }
-                // may conflict
-                //seg.data = null;
             }
 
         }
@@ -189,8 +183,8 @@ namespace NZBHags
                     if (seg.id - 1 == seg.parent.saveprogress)
                     {
                         saveSegment(seg);
-                        seg.complete = true;
                         seg.parent.saveprogress++;
+                        cacheSize -= (ulong)seg.bytes;
                         toremove.Add(seg);
                     }
                 }
@@ -216,6 +210,7 @@ namespace NZBHags
 
         public void addSegment(ref Segment segment)
         {
+            segment.status = Segment.Status.WRITECACHE;
             lock (newSegments)
             {
                 newSegments.Add(segment);
@@ -244,6 +239,7 @@ namespace NZBHags
             else if (cacheSize + (ulong)segment.bytes > (ulong)MAXCACHE * 1024 * 1024)
             {
                 Logging.Log("Cache too big, saving to disk");
+                segment.status = Segment.Status.TEMPCACHED;
                 segment.tempname = "temp"+new Random().Next(9999999);
 
                 FileStream stream = new FileStream(Properties.Settings.Default.tempFolder + "\\" + segment.tempname, FileMode.Create, FileAccess.Write);

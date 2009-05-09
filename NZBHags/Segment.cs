@@ -5,16 +5,28 @@ using System.Text;
 
 namespace NZBHags
 {
+    
+
     public class Segment
     {
+        public enum Status
+        {
+            QUEUED, // Not being handled
+            DOWNLOADING, // Sitting in NNTPConnection
+            YDECODING, // Sitting in YDecoder
+            TEMPCACHED, // Temporarity written to disk by WriteCache
+            WRITECACHE, // Sitting in WriteCache
+            COMPLETE // Completed
+        }
 
         public FileJob parent { get; set; } // parent filejob
         public int id { get; set; } // file id, sorted by nzb number
 
         public string addr { get; set; } // post address
-        public string subject { get; set; } // post subject (fallback filename?)
+        //public string subject { get; set; } // post subject (fallback filename?)
 
-        public bool complete { get; set; } // completed downloading
+        //public bool complete { get; set; } // completed downloading
+        public Status status { get; set; }
         public bool tempsaved { get; set; }
         public string tempname { get; set; }
 
@@ -30,6 +42,7 @@ namespace NZBHags
 
         public Segment()
         {
+            status = Status.QUEUED;
         }
 
         public bool ValidateCRC()

@@ -29,6 +29,7 @@ namespace NZBHags
 
         public void DecodeSegment(Segment segment)
         {
+            segment.status = Segment.Status.YDECODING;
             lock (segments)
             {
                 segments.Enqueue(segment);

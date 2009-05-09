@@ -123,6 +123,10 @@
       <DependentUpon>SettingsForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="QueueControl.resx">
+      <DependentUpon>QueueControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
@@ -151,6 +155,12 @@
     </Compile>
     <Compile Include="lib\StopWatch.cs" />
     <Compile Include="lib\XmlFileResolver.cs" />
+    <Compile Include="QueueControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="QueueControl.Designer.cs">
+      <DependentUpon>QueueControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="WriteCache.cs" />
     <Compile Include="YDecoder.cs" />
   </ItemGroup>
@@ -170,6 +180,11 @@
     <Content Include="lib\ydec.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\start.png" />
+    <None Include="Resources\pause.png" />
+    <None Include="Resources\remove.png" />
+    <None Include="Resources\arrow-down.png" />
+    <None Include="Resources\arrow-up.png" />
     <None Include="Resources\1241176775_folder_48.png" />
     <None Include="Resources\1241176762_server.png" />
   </ItemGroup>
