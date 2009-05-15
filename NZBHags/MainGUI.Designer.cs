@@ -39,37 +39,42 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.logTextBox = new System.Windows.Forms.RichTextBox();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.treeView1 = new System.Windows.Forms.TreeView();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.speed = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.labelSpeed = new System.Windows.Forms.ToolStripStatusLabel();
             this.keepAliveDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.idleDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.connectedDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.nNTPConnectionBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nNTPConnectionBindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // statusStrip1
             // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.labelSpeed});
             this.statusStrip1.Location = new System.Drawing.Point(0, 450);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(813, 22);
@@ -155,6 +160,18 @@
             this.tabPage1.Text = "Queue";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.AutoScroll = true;
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(799, 221);
+            this.flowLayoutPanel1.TabIndex = 0;
+            this.flowLayoutPanel1.WrapContents = false;
+            this.flowLayoutPanel1.Layout += new System.Windows.Forms.LayoutEventHandler(this.Layout);
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.logTextBox);
@@ -177,6 +194,27 @@
             this.logTextBox.TabIndex = 0;
             this.logTextBox.Text = "";
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.treeView1);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(805, 227);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "tabPage3";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // treeView1
+            // 
+            this.treeView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeView1.Location = new System.Drawing.Point(-1, 0);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.Size = new System.Drawing.Size(805, 227);
+            this.treeView1.TabIndex = 2;
+            // 
             // toolStrip1
             // 
             this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
@@ -188,6 +226,28 @@
             this.toolStrip1.Size = new System.Drawing.Size(813, 55);
             this.toolStrip1.TabIndex = 3;
             this.toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = global::NZBHags.Properties.Resources.connect_established;
+            this.toolStripButton1.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(52, 52);
+            this.toolStripButton1.Text = "Connect/Disconnect";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            // 
+            // toolStripButton2
+            // 
+            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton2.Image = global::NZBHags.Properties.Resources.folder_open;
+            this.toolStripButton2.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(52, 52);
+            this.toolStripButton2.Text = "Open NZB";
+            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
             // dataGridView1
             // 
@@ -201,6 +261,7 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id,
+            this.speed,
             this.keepAliveDataGridViewCheckBoxColumn,
             this.idleDataGridViewCheckBoxColumn,
             this.connectedDataGridViewCheckBoxColumn});
@@ -210,14 +271,6 @@
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.Size = new System.Drawing.Size(810, 99);
             this.dataGridView1.TabIndex = 4;
-            // 
-            // id
-            // 
-            this.id.DataPropertyName = "id";
-            this.id.HeaderText = "id";
-            this.id.Name = "id";
-            this.id.ReadOnly = true;
-            this.id.Width = 20;
             // 
             // timer1
             // 
@@ -245,60 +298,25 @@
             this.splitContainer1.SplitterDistance = 256;
             this.splitContainer1.TabIndex = 5;
             // 
-            // tabPage3
+            // id
             // 
-            this.tabPage3.Controls.Add(this.treeView1);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(805, 227);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "tabPage3";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.id.DataPropertyName = "id";
+            this.id.HeaderText = "id";
+            this.id.Name = "id";
+            this.id.ReadOnly = true;
+            this.id.Width = 20;
             // 
-            // treeView1
+            // speed
             // 
-            this.treeView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.treeView1.Location = new System.Drawing.Point(-1, 0);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(805, 227);
-            this.treeView1.TabIndex = 2;
+            this.speed.DataPropertyName = "speed";
+            this.speed.HeaderText = "speed";
+            this.speed.Name = "speed";
+            this.speed.ReadOnly = true;
             // 
-            // flowLayoutPanel1
+            // labelSpeed
             // 
-            this.flowLayoutPanel1.AutoScroll = true;
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(799, 221);
-            this.flowLayoutPanel1.TabIndex = 0;
-            this.flowLayoutPanel1.WrapContents = false;
-            this.flowLayoutPanel1.Layout += new System.Windows.Forms.LayoutEventHandler(this.Layout);
-            // 
-            // toolStripButton1
-            // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = global::NZBHags.Properties.Resources.connect_established;
-            this.toolStripButton1.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(52, 52);
-            this.toolStripButton1.Text = "Connect/Disconnect";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
-            // 
-            // toolStripButton2
-            // 
-            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton2.Image = global::NZBHags.Properties.Resources.folder_open;
-            this.toolStripButton2.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(52, 52);
-            this.toolStripButton2.Text = "Open NZB";
-            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
+            this.labelSpeed.Name = "labelSpeed";
+            this.labelSpeed.Size = new System.Drawing.Size(0, 17);
             // 
             // keepAliveDataGridViewCheckBoxColumn
             // 
@@ -339,18 +357,20 @@
             this.Name = "MainGUI";
             this.Text = "NZBHags";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Shutdown);
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);
-            this.tabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nNTPConnectionBindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -374,18 +394,20 @@
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.DataGridViewCheckBoxColumn readyDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.BindingSource nNTPConnectionBindingSource1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn id;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn keepAliveDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn idleDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn connectedDataGridViewCheckBoxColumn;
         private System.Windows.Forms.ToolStripButton toolStripButton2;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn speed;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn keepAliveDataGridViewCheckBoxColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn idleDataGridViewCheckBoxColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn connectedDataGridViewCheckBoxColumn;
+        private System.Windows.Forms.ToolStripStatusLabel labelSpeed;
+        public System.Windows.Forms.Timer timer1;
     }
 }
 

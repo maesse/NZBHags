@@ -17,6 +17,7 @@ namespace NZBHags
         QueueHandler()
         {
             collections = new ArrayList();
+            currentFileJob = new FileJob();
         }
 
         public void AddCollection(FileCollection collection)
@@ -105,33 +106,36 @@ namespace NZBHags
 
         public Segment getNextQueueItem()
         {
-            lock (typeof(QueueHandler))
+            if (currentFileJob == null)
             {
-                if (currentFileJob == null)
+                if (collections.Count == 0)
                 {
-                    if (collections.Count == 0)
-                    {
-                        return null;
-                    }
-                    FileCollection coll = (FileCollection)collections[0];
-                    currentFileJob = (FileJob)coll.queue.Dequeue();
+                    return null;
                 }
-                else if (currentFileJob.queue.Count == 0)
+                FileCollection coll = (FileCollection)collections[0];
+                currentFileJob = (FileJob)coll.queue.Dequeue();
+            }
+            lock (currentFileJob)
+            {
+                
+                if (currentFileJob.queue.Count == 0)
                 {
-                    //currentFileJob.Complete();
                     if (collections.Count != 0)
                     {
                         foreach (FileCollection col in collections)
                         {
-                            if(col.status != CollectionStatus.PAUSE && col.queue.Count > 0)
+                            if (col.status != CollectionStatus.PAUSE && col.queue.Count > 0)
+                            {
+                                col.status = CollectionStatus.DOWNLOADING;
                                 currentFileJob = (FileJob)col.queue.Dequeue();
+                                break;
+                            }
                         }
                     }
                     else
                         return null;
                 }
-
-                return (Segment) currentFileJob.queue.Dequeue();
+                return (Segment)currentFileJob.queue.Dequeue();
             }
         }
 

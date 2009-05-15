@@ -20,6 +20,7 @@ namespace NZBHags
         public string name { get; set; }
         public ArrayList files { get; set; }
         public ulong size; // kb
+        public uint speed; // bytes/s
         public ulong progress; // kb
         public int id { get; set; }
         public Queue queue { get; set; }

@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.progressBar = new System.Windows.Forms.ProgressBar();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.labelName = new System.Windows.Forms.Label();
@@ -40,18 +39,12 @@
             this.buttonQueuedown = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.labelSpeed = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // progressBar
-            // 
-            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar.Location = new System.Drawing.Point(174, 14);
-            this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(111, 23);
-            this.progressBar.TabIndex = 2;
             // 
             // groupBox1
             // 
@@ -61,7 +54,7 @@
             this.groupBox1.Controls.Add(this.tableLayoutPanel1);
             this.groupBox1.Location = new System.Drawing.Point(3, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(471, 60);
+            this.groupBox1.Size = new System.Drawing.Size(581, 60);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             // 
@@ -70,47 +63,49 @@
             this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel1.ColumnCount = 8;
+            this.tableLayoutPanel1.ColumnCount = 9;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 117F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 55F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 56F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 44F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 89F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 62F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 61F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 71F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel1.Controls.Add(this.labelName, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.labelMb, 5, 0);
+            this.tableLayoutPanel1.Controls.Add(this.labelMb, 6, 0);
             this.tableLayoutPanel1.Controls.Add(this.labelProgress, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.progressBar, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.labelTimeleft, 4, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.button1, 7, 0);
-            this.tableLayoutPanel1.Controls.Add(this.button2, 6, 0);
+            this.tableLayoutPanel1.Controls.Add(this.button1, 8, 0);
+            this.tableLayoutPanel1.Controls.Add(this.button2, 7, 0);
+            this.tableLayoutPanel1.Controls.Add(this.labelSpeed, 5, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(6, 9);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(459, 51);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(569, 51);
             this.tableLayoutPanel1.TabIndex = 8;
             // 
             // labelName
             // 
             this.labelName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.labelName.AutoSize = true;
-            this.labelName.Location = new System.Drawing.Point(32, 12);
+            this.labelName.Location = new System.Drawing.Point(32, 19);
             this.labelName.Name = "labelName";
-            this.labelName.Size = new System.Drawing.Size(106, 26);
+            this.labelName.Size = new System.Drawing.Size(147, 13);
             this.labelName.TabIndex = 3;
-            this.labelName.Text = "Name dffghfgh dfgdfgdfg";
+            this.labelName.Text = "Name";
             // 
             // labelMb
             // 
             this.labelMb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.labelMb.AutoSize = true;
-            this.labelMb.Location = new System.Drawing.Point(346, 19);
+            this.labelMb.Location = new System.Drawing.Point(441, 19);
             this.labelMb.Name = "labelMb";
-            this.labelMb.Size = new System.Drawing.Size(50, 13);
+            this.labelMb.Size = new System.Drawing.Size(65, 13);
             this.labelMb.TabIndex = 6;
             this.labelMb.Text = "MB Left";
             // 
@@ -118,9 +113,9 @@
             // 
             this.labelProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.labelProgress.AutoSize = true;
-            this.labelProgress.Location = new System.Drawing.Point(144, 19);
+            this.labelProgress.Location = new System.Drawing.Point(185, 19);
             this.labelProgress.Name = "labelProgress";
-            this.labelProgress.Size = new System.Drawing.Size(24, 13);
+            this.labelProgress.Size = new System.Drawing.Size(38, 13);
             this.labelProgress.TabIndex = 7;
             this.labelProgress.Text = "%";
             // 
@@ -128,9 +123,9 @@
             // 
             this.labelTimeleft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.labelTimeleft.AutoSize = true;
-            this.labelTimeleft.Location = new System.Drawing.Point(291, 19);
+            this.labelTimeleft.Location = new System.Drawing.Point(318, 19);
             this.labelTimeleft.Name = "labelTimeleft";
-            this.labelTimeleft.Size = new System.Drawing.Size(49, 13);
+            this.labelTimeleft.Size = new System.Drawing.Size(56, 13);
             this.labelTimeleft.TabIndex = 4;
             this.labelTimeleft.Text = "TimeLeft";
             // 
@@ -173,7 +168,7 @@
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.Image = global::NZBHags.Properties.Resources.remove;
-            this.button1.Location = new System.Drawing.Point(432, 13);
+            this.button1.Location = new System.Drawing.Point(542, 13);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(24, 24);
             this.button1.TabIndex = 5;
@@ -184,12 +179,30 @@
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.Image = global::NZBHags.Properties.Resources.pause;
-            this.button2.Location = new System.Drawing.Point(402, 13);
+            this.button2.Location = new System.Drawing.Point(512, 13);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(24, 24);
             this.button2.TabIndex = 9;
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // progressBar
+            // 
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar.Location = new System.Drawing.Point(229, 14);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(83, 23);
+            this.progressBar.TabIndex = 2;
+            // 
+            // labelSpeed
+            // 
+            this.labelSpeed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelSpeed.AutoSize = true;
+            this.labelSpeed.Location = new System.Drawing.Point(380, 19);
+            this.labelSpeed.Name = "labelSpeed";
+            this.labelSpeed.Size = new System.Drawing.Size(55, 13);
+            this.labelSpeed.TabIndex = 10;
+            this.labelSpeed.Text = "0 Kb/s";
             // 
             // QueueControl
             // 
@@ -198,7 +211,7 @@
             this.Controls.Add(this.groupBox1);
             this.MinimumSize = new System.Drawing.Size(400, 0);
             this.Name = "QueueControl";
-            this.Size = new System.Drawing.Size(474, 63);
+            this.Size = new System.Drawing.Size(584, 63);
             this.groupBox1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
@@ -209,7 +222,6 @@
 
         #endregion
 
-        private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button buttonQueueup;
         private System.Windows.Forms.Button buttonQueuedown;
@@ -221,5 +233,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.ProgressBar progressBar;
+        private System.Windows.Forms.Label labelSpeed;
     }
 }

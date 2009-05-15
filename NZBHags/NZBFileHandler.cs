@@ -37,7 +37,10 @@ namespace NZBHags
 
             ArrayList files = ParseXML(document, collection);
             collection.files = files;
-
+            foreach (FileJob job in files)
+            {
+                collection.size += job.size;
+            }
             // Loadtime measuring
             sw.Stop();
             Logging.Log("Loading NZB took {0} ms", sw.GetElapsedTimeSpan().TotalMilliseconds);
@@ -135,6 +138,7 @@ namespace NZBHags
                                 {
                                     case "bytes":
                                         segment.bytes = int.Parse(attr.Value);
+                                        filejob.size += (ulong)segment.bytes;
                                         break;
                                     case "number":
                                         segment.id = int.Parse(attr.Value);

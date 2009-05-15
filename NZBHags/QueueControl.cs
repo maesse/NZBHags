@@ -13,12 +13,79 @@ namespace NZBHags
     {
         public FileCollection collection { get; set; }
         private MainGUI gui;
+        private ulong lastProgress = 0;
+        private ulong speed = 0;
         public QueueControl(FileCollection collection, MainGUI gui)
         {
             this.gui = gui;
             this.collection = collection;
             InitializeComponent();
+            UpdateUI();
+            
+        }
+
+        public void UpdateUI() 
+        {
             labelName.Text = collection.name;
+            ulong size = collection.size;
+            int sizei = 0;
+            while(size > 1024) {
+                size = size/1024;
+                sizei++;
+            }
+            string outsize = null;
+            switch(sizei) {
+                case 0:
+                    outsize = string.Format("{0:n} B", size);
+                    break;
+                case 1:
+                    outsize = string.Format("{0:n} KB", size);
+                    break;
+                case 2:
+                    outsize = string.Format("{0:n} MB", size);
+                    break;
+                case 3:
+                    outsize = string.Format("{0:n} GB", size);
+                    break;
+            }
+            labelMb.Text = outsize;
+            if (collection.status != CollectionStatus.DOWNLOADING)
+                labelTimeleft.Text = "";
+            else
+            {
+                // Figure out speed
+                ulong tempprogress = collection.progress - lastProgress;
+                lastProgress = collection.progress;
+                float time = (int)(1000f / (float)gui.timer1.Interval);
+                tempprogress = (ulong)(tempprogress * time);
+                speed += (ulong)(tempprogress / 1000f);
+                speed /= 2;
+                labelSpeed.Text = string.Format("{0:n}", speed);
+
+                // Timeleft
+                if (speed != 0)
+                {
+                    ulong left = collection.size - collection.progress; // bytes left
+                    string timeleft = "";
+                    int hour = 0, min = 0, secs = 0;
+                    secs = (int)(left / (speed * 1000));
+                    if (secs > 60)
+                    {
+                        min = secs / 60;
+                        secs -= min * 60;
+                        if (min > 60)
+                        {
+                            hour = min / 60;
+                            min -= hour * 60;
+                        }
+                    }
+                    timeleft = string.Format("{0}:{1:00}:{2:00}", hour, min, secs);
+                    labelTimeleft.Text = timeleft;
+                }
+
+                progressBar.Value = (int)((float)(collection.progress / (float)collection.size) * 100);
+                labelProgress.Text = string.Format("{0}%", progressBar.Value);
+            }
             
         }
 
@@ -30,8 +97,6 @@ namespace NZBHags
         private void button1_Click(object sender, EventArgs e)
         {
             gui.remQueue(this);
-            //Parent.Controls.Remove(this);
-            //Dispose();
         }
 
         private void buttonQueueup_Click(object sender, EventArgs e)

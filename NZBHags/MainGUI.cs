@@ -14,6 +14,7 @@ namespace NZBHags
         SettingsForm settingsForm;
         NewsServer server;
         QueueHandler handler;
+        public uint dlspeed { get; set; }
 
         public MainGUI()
         {
@@ -30,25 +31,6 @@ namespace NZBHags
             nzb.queue = NZBFileHandler.genQueue(nzb.files);
             QueueHandler.Instance.AddCollection(nzb);
             flowLayoutPanel1.Controls.Add(new QueueControl(nzb, this));
-
-            //// Add to UI
-            //TreeNode[] files = new TreeNode[nzb.files.Count];
-            //int i = 0;
-            //foreach (FileJob file in nzb.files)
-            //{
-            //    TreeNode[] parts = new TreeNode[file.segments.Count];
-            //    int j = 0;
-
-            //    foreach (Segment part in file.segments)
-            //    {
-            //        parts[j] = new TreeNode(string.Format("part({0}), bytes={1}, addr={2}", part.id, part.bytes, part.addr));
-            //        j++;
-            //    }
-            //    files[i] = new TreeNode("Filename: "+file.subject+" size=" + ((file.size/1024)/1024)+"MB", parts);
-            //    i++;
-            //}
-            //treeView1.Nodes.Add(new TreeNode(filename, files));
-
         }
 
         private void OpenNzbDialog(object sender, EventArgs e)
@@ -150,6 +132,36 @@ namespace NZBHags
                 //}
 
                 QueueHandler.Instance.changed = false;
+            }
+            if (server.nntpConnections != null)
+            {
+                uint tempspeed = 0;
+                foreach (NNTPConnection con in server.nntpConnections)
+                {
+                    tempspeed += con.speed;
+                }
+                tempspeed /= (uint)server.nntpConnections.Length;
+                dlspeed = tempspeed;
+            }
+            //if (dlspeed > 1024)
+            //{
+            //    dlspeed /= 1024;
+            //    labelSpeed.Text = string.Format("{0:n} KB/s", dlspeed);
+            //}
+            //else
+            //{
+            //    if (dlspeed != 0)
+            //    {
+            //        labelSpeed.Text = string.Format("{0:n} B/s", dlspeed);
+            //    }
+            //    else
+            //    {
+            //        labelSpeed.Text = "";
+            //    }
+            //}
+            foreach (QueueControl control in flowLayoutPanel1.Controls)
+            {
+                control.UpdateUI();
             }
             // Append logs
             lock (typeof(Logging))

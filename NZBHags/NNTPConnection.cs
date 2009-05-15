@@ -15,6 +15,7 @@ namespace NZBHags
     {
         public bool keepAlive { get; set; }
         public bool idle { get; set; }
+        public uint speed { get; set; }
 
 
         private NewsServer serverInfo;
@@ -78,6 +79,7 @@ namespace NZBHags
                     idle = false;
                     segment.data = RecieveSegment(segment);
                     YDecoder.Instance.DecodeSegment(segment);
+                    segment.parent.parent.progress += (ulong)segment.bytes;
                     idle = true;
                 }
                 else
