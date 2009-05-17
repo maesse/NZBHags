@@ -180,6 +180,9 @@
     <Content Include="lib\ydec.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\home.png" />
+    <None Include="Resources\folder_add2.png" />
+    <None Include="Resources\folder_add.png" />
     <None Include="Resources\start.png" />
     <None Include="Resources\pause.png" />
     <None Include="Resources\remove.png" />

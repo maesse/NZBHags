@@ -50,7 +50,7 @@ namespace NZBHags
         private static string getPrettyFilename(string filename)
         {
             filename = filename.Substring(0, filename.IndexOf(".nzb")); // cut off .nzb
-            int dir = filename.LastIndexOf('\\');
+            int dir = filename.LastIndexOf('\\')+1;
             return filename.Substring(dir, filename.Length-dir);
         }
 

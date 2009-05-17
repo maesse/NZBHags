@@ -173,17 +173,14 @@ namespace NZBHags
                         case '.':
                             dot = true;
                             break;
-
                     }
                     if (decode && !finished)
                     {
                         // Decode byte
                         buffer[0] -= 42 %256;
                         output[bufpos] = buffer[0];
-
                         bufpos++;
                     }
-                    
                     decode = true;
                 }
                 byte[] data = new byte[bufpos];
@@ -192,8 +189,6 @@ namespace NZBHags
                 segment.bytes = segment.data.Length;
                 segment.ValidateCRC();
                 WriteCache.Instance.addSegment(ref segment);
-                
-                
             }
         }
 

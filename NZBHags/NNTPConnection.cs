@@ -20,6 +20,8 @@ namespace NZBHags
 
         private NewsServer serverInfo;
         private QueueHandler handler;
+        private byte[] endbytes = { (byte)'\r', (byte)'\n' };
+        private byte[] endbytes2 = { (byte)'.', (byte)'\r', (byte)'\n'};
         public int id;
         System.Text.ASCIIEncoding enc = new System.Text.ASCIIEncoding();
         Performance.Stopwatch sw;
@@ -98,15 +100,15 @@ namespace NZBHags
             Assert(Response(), "222");
 
             NetworkStream stream = GetStream();
-            stream.ReadTimeout = 2000;
+            stream.ReadTimeout = 10000;
             
             byte[] buffer = new byte[segment.bytes];
             int read = 0;
-
+            bool done = false;
             int chunk;
             try
             {
-                while ((chunk = stream.Read(buffer, read, buffer.Length - read)) > 0 && keepAlive)
+                while (!done && (chunk = stream.Read(buffer, read, buffer.Length - read)) > 0 && keepAlive)
                 {
                     read += chunk;
 
@@ -116,7 +118,17 @@ namespace NZBHags
                         Array.Copy(buffer, newBuffer, buffer.Length);
                         buffer = newBuffer;
                     }
-                    
+                    //for (int i = read - chunk; i < read-2; i++)
+                    //{
+                    //    if (buffer[i] == '.' && buffer[i + 1] == '\r' && buffer[i + 2] == '\n')
+                    //    {
+                    //        if (read < 4 || (buffer[i-2] == '\r' && buffer[i -1] == '\n'))
+                    //        {
+                    //            done = true;
+                    //            break;
+                    //        }
+                    //    }
+                    //}
                     // Looks for .\r\n (End of message)
                     if (read > 2 && buffer[read - 3] == '.' && buffer[read - 2] == '\r' && buffer[read - 1] == '\n')
                     {
@@ -131,6 +143,8 @@ namespace NZBHags
             catch (IOException ex)
             {
                 Logging.Log("(NNTPConnection(" + id + ")) IOException: " + ex.ToString());
+                Disconnect();
+                Login();
             }
             byte[] returnarray = new byte[read-3];
             Array.Copy(buffer, returnarray, read-3);

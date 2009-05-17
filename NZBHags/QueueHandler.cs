@@ -117,7 +117,7 @@ namespace NZBHags
             }
             lock (currentFileJob)
             {
-                
+
                 if (currentFileJob.queue.Count == 0)
                 {
                     if (collections.Count != 0)
@@ -132,10 +132,12 @@ namespace NZBHags
                             }
                         }
                     }
-                    else
                         return null;
                 }
-                return (Segment)currentFileJob.queue.Dequeue();
+                else
+                {
+                    return (Segment)currentFileJob.queue.Dequeue();
+                }
             }
         }
 

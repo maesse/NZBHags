@@ -52,13 +52,13 @@ namespace NZBHags
             if (crc.Length != 8 || calculatedCRC.Equals(crc))
             {
                 // No CRC or CRC OK.. moving on
-                Logging.Log("(ValidateCRC) SUCESS - crc=" + calculatedCRC);
+                //Logging.Log("(ValidateCRC) SUCESS - crc=" + calculatedCRC);
                 crcOk = true;
             }
             else
             {
                 // CRC failed
-                Logging.Log("(ValidateCRC) FAILED: Expected crc: " + crc + " - Actual crc: " + calculatedCRC);
+                Logging.Log("(ValidateCRC) (id=" + id + ") FAILED: Expected crc: " + crc + " - Actual crc: " + calculatedCRC);
                 crcOk = false;
             }
 

@@ -15,7 +15,7 @@ namespace NZBHags
         {
             lock (typeof(Logging))
             {
-                logList.Add(str + '\n');
+                //logList.Add(str + '\n');
                 System.Console.WriteLine(str);
             }
         }

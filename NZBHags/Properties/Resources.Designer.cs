@@ -95,6 +95,20 @@ namespace NZBHags.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap folder_add {
+            get {
+                object obj = ResourceManager.GetObject("folder_add", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap folder_add2 {
+            get {
+                object obj = ResourceManager.GetObject("folder_add2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap folder_open {
             get {
                 object obj = ResourceManager.GetObject("folder_open", resourceCulture);
@@ -105,6 +119,13 @@ namespace NZBHags.Properties {
         internal static System.Drawing.Bitmap hag {
             get {
                 object obj = ResourceManager.GetObject("hag", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap home {
+            get {
+                object obj = ResourceManager.GetObject("home", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

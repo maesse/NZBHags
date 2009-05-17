@@ -133,16 +133,16 @@ namespace NZBHags
 
                 QueueHandler.Instance.changed = false;
             }
-            if (server.nntpConnections != null)
-            {
-                uint tempspeed = 0;
-                foreach (NNTPConnection con in server.nntpConnections)
-                {
-                    tempspeed += con.speed;
-                }
-                tempspeed /= (uint)server.nntpConnections.Length;
-                dlspeed = tempspeed;
-            }
+            //if (server.nntpConnections != null)
+            //{
+            //    uint tempspeed = 0;
+            //    foreach (NNTPConnection con in server.nntpConnections)
+            //    {
+            //        tempspeed += con.speed;
+            //    }
+            //    tempspeed /= (uint)server.nntpConnections.Length;
+            //    dlspeed = tempspeed;
+            //}
             //if (dlspeed > 1024)
             //{
             //    dlspeed /= 1024;
@@ -207,6 +207,15 @@ namespace NZBHags
             {
                 ((QueueControl)ctrl).ResizeInLayoutEvent();
             }
+        }
+
+        private void toolStripButton3_Click(object sender, EventArgs e)
+        {
+            string windir = Environment.GetEnvironmentVariable("WINDIR");
+            System.Diagnostics.Process prc = new System.Diagnostics.Process();
+            prc.StartInfo.FileName = windir + @"\explorer.exe";
+            prc.StartInfo.Arguments = Properties.Settings.Default.outputPath;
+            prc.Start();
         }
 
     }

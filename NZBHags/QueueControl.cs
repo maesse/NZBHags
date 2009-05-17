@@ -27,6 +27,7 @@ namespace NZBHags
         public void UpdateUI() 
         {
             labelName.Text = collection.name;
+
             ulong size = collection.size;
             int sizei = 0;
             while(size > 1024) {
@@ -49,6 +50,7 @@ namespace NZBHags
                     break;
             }
             labelMb.Text = outsize;
+
             if (collection.status != CollectionStatus.DOWNLOADING)
                 labelTimeleft.Text = "";
             else
@@ -60,7 +62,7 @@ namespace NZBHags
                 tempprogress = (ulong)(tempprogress * time);
                 speed += (ulong)(tempprogress / 1000f);
                 speed /= 2;
-                labelSpeed.Text = string.Format("{0:n}", speed);
+                labelSpeed.Text = string.Format("{0:n} KB/s", speed);
 
                 // Timeleft
                 if (speed != 0)
@@ -84,7 +86,7 @@ namespace NZBHags
                 }
 
                 progressBar.Value = (int)((float)(collection.progress / (float)collection.size) * 100);
-                labelProgress.Text = string.Format("{0}%", progressBar.Value);
+                labelProgress.Text = string.Format("{0:0}%", progressBar.Value);
             }
             
         }
