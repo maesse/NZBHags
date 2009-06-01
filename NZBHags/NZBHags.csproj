@@ -63,7 +63,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CRC32Hasher.cs" />
+    <Compile Include="Decoder\CRC32Hasher.cs" />
+    <Compile Include="GUI\DLThreadGUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\DLThreadGUI.Designer.cs">
+      <DependentUpon>DLThreadGUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\EmptyQueue.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\EmptyQueue.Designer.cs">
+      <DependentUpon>EmptyQueue.cs</DependentUpon>
+    </Compile>
     <Compile Include="lib\AboutBox1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -73,44 +85,53 @@
     <Compile Include="lib\CredentialList.cs" />
     <Compile Include="FileCollection.cs" />
     <Compile Include="FileJob.cs" />
+    <Compile Include="lib\IUpdatingControl.cs" />
     <Compile Include="lib\Logging.cs" />
-    <Compile Include="FolderSettingsGUI.cs">
+    <Compile Include="GUI\FolderSettingsGUI.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="FolderSettingsGUI.Designer.cs">
+    <Compile Include="GUI\FolderSettingsGUI.Designer.cs">
       <DependentUpon>FolderSettingsGUI.cs</DependentUpon>
     </Compile>
     <Compile Include="lib\ISettings.cs" />
-    <Compile Include="MainGUI.cs">
+    <Compile Include="GUI\MainGUI.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainGUI.Designer.cs">
+    <Compile Include="GUI\MainGUI.Designer.cs">
       <DependentUpon>MainGUI.cs</DependentUpon>
     </Compile>
     <Compile Include="NewsServer.cs" />
     <Compile Include="NNTPConnection.cs" />
-    <Compile Include="NNTPServerSettingsGUI.cs">
+    <Compile Include="GUI\NNTPServerSettingsGUI.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="NNTPServerSettingsGUI.Designer.cs">
+    <Compile Include="GUI\NNTPServerSettingsGUI.Designer.cs">
       <DependentUpon>NNTPServerSettingsGUI.cs</DependentUpon>
     </Compile>
     <Compile Include="NZBFileHandler.cs" />
     <Compile Include="lib\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="GUI\DLThreadGUI.resx">
+      <DependentUpon>DLThreadGUI.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\EmptyQueue.resx">
+      <DependentUpon>EmptyQueue.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="lib\AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="FolderSettingsGUI.resx">
+    <EmbeddedResource Include="GUI\FolderSettingsGUI.resx">
       <DependentUpon>FolderSettingsGUI.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainGUI.resx">
+    <EmbeddedResource Include="GUI\MainGUI.resx">
       <DependentUpon>MainGUI.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="NNTPServerSettingsGUI.resx">
+    <EmbeddedResource Include="GUI\NNTPServerSettingsGUI.resx">
       <DependentUpon>NNTPServerSettingsGUI.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -119,11 +140,11 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="SettingsForm.resx">
+    <EmbeddedResource Include="GUI\SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="QueueControl.resx">
+    <EmbeddedResource Include="GUI\QueueControl.resx">
       <DependentUpon>QueueControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -147,22 +168,22 @@
     <Compile Include="QueueHandler.cs" />
     <Compile Include="Segment.cs" />
     <Compile Include="SegmentComparer.cs" />
-    <Compile Include="SettingsForm.cs">
+    <Compile Include="GUI\SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SettingsForm.Designer.cs">
+    <Compile Include="GUI\SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="lib\StopWatch.cs" />
     <Compile Include="lib\XmlFileResolver.cs" />
-    <Compile Include="QueueControl.cs">
+    <Compile Include="GUI\QueueControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="QueueControl.Designer.cs">
+    <Compile Include="GUI\QueueControl.Designer.cs">
       <DependentUpon>QueueControl.cs</DependentUpon>
     </Compile>
     <Compile Include="WriteCache.cs" />
-    <Compile Include="YDecoder.cs" />
+    <Compile Include="Decoder\YDecoder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\DataSources\NewsServer.datasource" />
@@ -180,6 +201,9 @@
     <Content Include="lib\ydec.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\Untitled-11.png" />
+    <None Include="Resources\Untitled-1.png" />
+    <None Include="Resources\splicer.png" />
     <None Include="Resources\home.png" />
     <None Include="Resources\folder_add2.png" />
     <None Include="Resources\folder_add.png" />

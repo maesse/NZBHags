@@ -16,6 +16,7 @@ namespace NZBHags
         public bool keepAlive { get; set; }
         public bool idle { get; set; }
         public uint speed { get; set; }
+        public Segment currentSegment { get; set; }
 
 
         private NewsServer serverInfo;
@@ -77,12 +78,14 @@ namespace NZBHags
                 // Check Queuehandler..
                 if ((segment = handler.getNextQueueItem()) != null)
                 {
+                    currentSegment = segment;
                     segment.status = Segment.Status.DOWNLOADING;
                     idle = false;
                     segment.data = RecieveSegment(segment);
                     YDecoder.Instance.DecodeSegment(segment);
                     
                     idle = true;
+                    currentSegment = null;
                 }
                 else
                 {
@@ -112,6 +115,7 @@ namespace NZBHags
                 {
                     read += chunk;
                     segment.parent.parent.progress += (ulong)chunk;
+                    segment.progress += chunk;
                     if (read == buffer.Length)
                     {
                         byte[] newBuffer = new byte[buffer.Length * 2];

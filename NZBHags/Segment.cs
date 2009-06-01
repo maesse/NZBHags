@@ -32,6 +32,7 @@ namespace NZBHags
 
         public byte[] data { get; set; } // data read (big)
         public int bytes { get; set; } // bytes read
+        public int progress { get; set; } // progress in bytes updated from nntpconnection
         
         public int ypart { get; set; } // yenc part number
         public string yname { get; set; } // Filename as described by yenc

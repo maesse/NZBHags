@@ -71,14 +71,19 @@ namespace NZBHags
             mainPanel.Controls.Add(new NNTPServerSettingsGUI(ref server));
         }
 
-        private void toolStripButton1_Click(object sender, EventArgs e)
-        {
-            setMain(settings);
-        }
 
-        private void toolStripButton2_Click(object sender, EventArgs e)
+        private void toolStripButton2_Click_1(object sender, EventArgs e)
         {
             setMain(folder);
+            toolStripButton1.Checked = false;
+            toolStripButton2.Checked = true;
+        }
+
+        private void toolStripButton1_Click_1(object sender, EventArgs e)
+        {
+            setMain(settings);
+            toolStripButton1.Checked = true;
+            toolStripButton2.Checked = false;
         }
     }
 }

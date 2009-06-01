@@ -6,7 +6,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-
+using NZBHags.lib;
+using NZBHags.GUI;
 namespace NZBHags
 {
     public partial class MainGUI : Form
@@ -20,8 +21,9 @@ namespace NZBHags
         {
             InitializeComponent();
             handler = QueueHandler.Instance;
-            
+            flowLayoutPanel1.Controls.Add(new EmptyQueue());
             server = new NewsServer();
+            
             
         }
 
@@ -72,8 +74,8 @@ namespace NZBHags
             {
                 for (int i = 0; i < server.connections; i++)
                 {
-
-                    nNTPConnectionBindingSource1.Remove(server.nntpConnections[i]);
+                    panel1.Controls.Clear();
+                    
                 }
                 server.Disconnect();
                 toolStripButton1.Image = NZBHags.Properties.Resources.connect_established;
@@ -85,7 +87,13 @@ namespace NZBHags
                 for (int i = 0; i < server.connections; i++ )
                 {
                     
-                    nNTPConnectionBindingSource1.Add(server.nntpConnections[i]);
+                    //nNTPConnectionBindingSource1.Add(server.nntpConnections[i]);
+                    //flowLayoutPanelThreads.Controls.Add(new DLThreadGUI(server.nntpConnections[i]));
+                    //listBox1.Controls.Add(new DLThreadGUI(server.nntpConnections[i]));
+                    Control ctrl = new DLThreadGUI(server.nntpConnections[i]);
+                    ctrl.Location = new System.Drawing.Point(0, panel1.Controls.Count * 23);
+                    panel1.Controls.Add(ctrl);
+                    
                 }
             }
         }
@@ -124,42 +132,28 @@ namespace NZBHags
             dataGridView1.Refresh();
             if (QueueHandler.Instance.changed)
             {
-                //flowLayoutPanel1.Controls.Clear();
-                //FileCollection[] coll = QueueHandler.Instance.getCollections();
-                //for (int i = 0; i < coll.Length; i++)
-                //{
-                //    flowLayoutPanel1.Controls.Add(new QueueControl(coll[i]));
-                //}
-
                 QueueHandler.Instance.changed = false;
             }
-            //if (server.nntpConnections != null)
-            //{
-            //    uint tempspeed = 0;
-            //    foreach (NNTPConnection con in server.nntpConnections)
-            //    {
-            //        tempspeed += con.speed;
-            //    }
-            //    tempspeed /= (uint)server.nntpConnections.Length;
-            //    dlspeed = tempspeed;
-            //}
-            //if (dlspeed > 1024)
-            //{
-            //    dlspeed /= 1024;
-            //    labelSpeed.Text = string.Format("{0:n} KB/s", dlspeed);
-            //}
-            //else
-            //{
-            //    if (dlspeed != 0)
-            //    {
-            //        labelSpeed.Text = string.Format("{0:n} B/s", dlspeed);
-            //    }
-            //    else
-            //    {
-            //        labelSpeed.Text = "";
-            //    }
-            //}
-            foreach (QueueControl control in flowLayoutPanel1.Controls)
+            if (flowLayoutPanel1.Controls.Count > 1)
+            {
+                foreach (Control control in flowLayoutPanel1.Controls)
+                {
+                    if (control is EmptyQueue)
+                    {
+                        flowLayoutPanel1.Controls.Remove(control);
+                        break;
+                    }
+                }
+            }
+            else if (flowLayoutPanel1.Controls.Count == 0)
+            {
+                flowLayoutPanel1.Controls.Add(new EmptyQueue());
+            }
+            foreach (IUpdatingControl control in flowLayoutPanel1.Controls)
+            {
+                control.UpdateUI();
+            }
+            foreach (IUpdatingControl control in panel1.Controls)
             {
                 control.UpdateUI();
             }
@@ -206,7 +200,7 @@ namespace NZBHags
         {
             foreach (Control ctrl in ((Control)sender).Controls)
             {
-                ((QueueControl)ctrl).ResizeInLayoutEvent();
+                ((IUpdatingControl)ctrl).ResizeInLayoutEvent();
             }
         }
 

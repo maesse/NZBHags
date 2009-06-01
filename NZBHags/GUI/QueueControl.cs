@@ -6,10 +6,11 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using NZBHags.lib;
 
 namespace NZBHags
 {
-    public partial class QueueControl : UserControl
+    public partial class QueueControl : UserControl, IUpdatingControl
     {
         public FileCollection collection { get; set; }
         private MainGUI gui;
@@ -24,32 +25,39 @@ namespace NZBHags
             
         }
 
+        private string bytesToString(long nBytes)
+        {
+            int sizei = 0;
+            while (nBytes > 1024)
+            {
+                nBytes = nBytes / 1024;
+                sizei++;
+            }
+            string outsize = null;
+            switch (sizei)
+            {
+                case 0:
+                    outsize = string.Format("{0:n} B", nBytes);
+                    break;
+                case 1:
+                    outsize = string.Format("{0:n} KB", nBytes);
+                    break;
+                case 2:
+                    outsize = string.Format("{0:n} MB", nBytes);
+                    break;
+                case 3:
+                    outsize = string.Format("{0:n} GB", nBytes);
+                    break;
+            }
+            return outsize;
+        }
+
         public void UpdateUI() 
         {
             labelName.Text = collection.name;
 
-            ulong size = collection.size;
-            int sizei = 0;
-            while(size > 1024) {
-                size = size/1024;
-                sizei++;
-            }
-            string outsize = null;
-            switch(sizei) {
-                case 0:
-                    outsize = string.Format("{0:n} B", size);
-                    break;
-                case 1:
-                    outsize = string.Format("{0:n} KB", size);
-                    break;
-                case 2:
-                    outsize = string.Format("{0:n} MB", size);
-                    break;
-                case 3:
-                    outsize = string.Format("{0:n} GB", size);
-                    break;
-            }
-            labelMb.Text = outsize;
+            MBDone.Text = bytesToString((long)collection.progress);
+            labelMb.Text = bytesToString((long)collection.size);
 
             if (collection.status != CollectionStatus.DOWNLOADING)
                 labelTimeleft.Text = "";
