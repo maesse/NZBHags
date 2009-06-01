@@ -195,7 +195,8 @@ namespace NZBHags
         // Called on formClosing, shuts down gracefully
         private void Shutdown(object sender, FormClosingEventArgs e)
         {
-            server.Disconnect();
+            if(server != null)
+                server.Disconnect();
             YDecoder.Instance.Shutdown();
             WriteCache.Instance.Shutdown();
         }

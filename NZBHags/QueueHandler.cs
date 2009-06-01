@@ -132,12 +132,14 @@ namespace NZBHags
                             }
                         }
                     }
-                        return null;
+                    return null;
                 }
-                else
+                else if (currentFileJob.parent.status != CollectionStatus.PAUSE)
                 {
                     return (Segment)currentFileJob.queue.Dequeue();
                 }
+                else
+                    return null;
             }
         }
 

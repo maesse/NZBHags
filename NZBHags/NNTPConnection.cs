@@ -81,7 +81,7 @@ namespace NZBHags
                     idle = false;
                     segment.data = RecieveSegment(segment);
                     YDecoder.Instance.DecodeSegment(segment);
-                    segment.parent.parent.progress += (ulong)segment.bytes;
+                    
                     idle = true;
                 }
                 else
@@ -111,7 +111,7 @@ namespace NZBHags
                 while (!done && (chunk = stream.Read(buffer, read, buffer.Length - read)) > 0 && keepAlive)
                 {
                     read += chunk;
-
+                    segment.parent.parent.progress += (ulong)chunk;
                     if (read == buffer.Length)
                     {
                         byte[] newBuffer = new byte[buffer.Length * 2];

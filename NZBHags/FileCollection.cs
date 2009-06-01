@@ -26,43 +26,6 @@ namespace NZBHags
         public Queue queue { get; set; }
         public CollectionStatus status { get; set; }
 
-        public void Remove()
-        {
-            queue = null;
-            foreach (FileJob file in files)
-            {
-                if (file.complete)
-                {
-                    if (File.Exists(file.outputfilename))
-                        File.Delete(file.outputfilename);
-                }
-                else
-                {
-                    foreach (Segment seg in file.segments)
-                    {
-                        while (seg.status == Segment.Status.YDECODING || seg.status == Segment.Status.WRITECACHE)
-                        {
-                            Thread.Sleep(10);
-                        }
-                        if (seg.status == Segment.Status.TEMPCACHED)
-                        {
-                            // remove temp file
-                            File.Delete(Properties.Settings.Default.tempFolder + "\\" + seg.tempname);
-                        }
-                        else if (seg.status == Segment.Status.COMPLETE)
-                        {
-                            // remove complete file
-                            if (File.Exists(seg.parent.outputfilename))
-                                File.Delete(seg.parent.outputfilename);
-                        }
-                    }
-                }
-                
-            }
-            files.Clear();
-            QueueHandler.Instance.removeCollection(this);
-        }
-
         public FileCollection(string name, ArrayList files)
         {
             this.name = name;
