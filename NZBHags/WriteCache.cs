@@ -68,10 +68,22 @@ namespace NZBHags
             }
         }
 
+        private void FlushWorkaround(ref WriteStream ws)
+        {
+            // well apparently .NET doesnt handle writing to files in multiple Write() calls very well
+            // I'll have to close and open the stream to make sure the data has been saved :(
+            string filename = ws.stream.Name;
+            ws.stream.Flush();
+            ws.stream.Close();
+            ws.stream.Dispose();
+            ws.stream = new FileStream(filename, FileMode.Append, FileAccess.Write);
+        }
+
         
 
         private void saveSegment(Segment seg)
         {
+            System.Console.WriteLine("Saving seg: " + seg.id);
             bool saved = false;
             // Check if stream is in cache
             List<WriteStream> toremove = new List<WriteStream>();
@@ -90,6 +102,8 @@ namespace NZBHags
                             byte[] buffer = new byte[seg.bytes];
                             stream.Read(buffer, 0, seg.bytes); // May end up blocking if seg.bytes is larger than actual file
                             ws.stream.Write(buffer, 0, buffer.Length);
+                            seg.parent.byteprogress += seg.data.Length;
+                            //FlushWorkaround(ref ws);
                             stream.Close();
                             seg.status = Segment.Status.COMPLETE;
                             seg.parent.saveprogress = seg.id;
@@ -97,7 +111,8 @@ namespace NZBHags
 
                         else
                         {
-                            ws.stream.Write(seg.data, 0, seg.bytes);
+                            ws.stream.Write(seg.data, 0, seg.data.Length);
+                            seg.parent.byteprogress += seg.data.Length;
                             seg.data = null;
                             seg.status = Segment.Status.COMPLETE;
                             seg.parent.saveprogress = seg.id;
@@ -131,7 +146,10 @@ namespace NZBHags
             {
                 // Open new stream..
                 FileStream stream = new FileStream(seg.parent.outputfilename, FileMode.Append, FileAccess.Write);
+                
                 stream.Write(seg.data, 0, seg.data.Length);
+                seg.parent.byteprogress += seg.data.Length;
+                seg.parent.saveprogress = seg.id;
                 seg.data = null;
                 seg.status = Segment.Status.COMPLETE;
                 // Was this the last part?
@@ -144,12 +162,10 @@ namespace NZBHags
                 else
                 {
                     // Cache stream - add new WriteStream
-                    seg.parent.saveprogress = seg.id;
                     WriteStream ws = new WriteStream();
                     ws.lastuse = DateTime.Now.Millisecond;
                     ws.stream = stream;
                     ws.filejob = seg.parent;
-
                     streams.Add(ws);
                 }
             }
@@ -180,10 +196,9 @@ namespace NZBHags
                 toremove.Clear();
                 foreach (Segment seg in segments)
                 {
-                    if (seg.id - 1 == seg.parent.saveprogress)
+                    if (seg.id-1 == seg.parent.saveprogress)
                     {
                         saveSegment(seg);
-                        seg.parent.saveprogress++;
                         cacheSize -= (ulong)seg.bytes;
                         toremove.Add(seg);
                     }
@@ -230,7 +245,7 @@ namespace NZBHags
                 saveSegment(segment);
 
             }
-            else if (segment.id == segment.parent.saveprogress+1)
+            else if (segment.id-1 == segment.parent.saveprogress)
             {
                 // Append to file
                 Logging.Log("(Cache) Recieved awaited segment");

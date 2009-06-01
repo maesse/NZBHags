@@ -30,6 +30,7 @@ namespace NZBHags
         // Progress
         public int saveprogress { get; set; } // filepart(s) written
         public bool complete { get; set; } // completed downloading+extracting
+        public long byteprogress { get; set; } // bytes written, not used ATM
         
 
         public FileJob(ref FileCollection parent)

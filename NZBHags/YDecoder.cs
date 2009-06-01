@@ -119,7 +119,7 @@ namespace NZBHags
                 byte[] buffer = new byte[1];
                 byte[] output = new byte[segment.data.Length];
                 bool cr = false, dot = false, finished = false, decode = true, nl = false, bleh2 = false; // flags
-                int bufpos = 0;
+                int bufpos = 0, lastnl = 0;
 
                 // Decode byte-for-byte
                 while (ms.Read(buffer, 0, 1) > 0 && !finished)
@@ -128,19 +128,19 @@ namespace NZBHags
                     {
                         // Discard \r\n by going back one byte and discarding current byte
                         bufpos--;
+                        lastnl = bufpos;
                         decode = false;
                     }
-                    else if (nl && dot && buffer[0] == '.')
+                    else if (dot && buffer[0] == '.' && bufpos == lastnl+1)
                     {
                         // Discard current (2nd) dot
+                        //string s = "";
+                        //for (int i = 10; i > 0; i--)
+                        //{
+                        //    s += (char)output[bufpos - 1 - i];
+                        //}
+                        //System.Console.WriteLine("LastNL: {0}, last10: {1}", lastnl, s);
                         decode = false;
-                    }
-                    if(buffer[0] != '.')
-                        nl = false;
-
-                    if (cr && buffer[0] == '\n')
-                    {
-                        nl = true;
                     }
                     // Reset flags
                     cr = false;
@@ -171,7 +171,8 @@ namespace NZBHags
                             cr = true;
                             break;
                         case '.':
-                            dot = true;
+                            if(decode)
+                                dot = true;
                             break;
                     }
                     if (decode && !finished)

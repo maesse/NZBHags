@@ -118,17 +118,6 @@ namespace NZBHags
                         Array.Copy(buffer, newBuffer, buffer.Length);
                         buffer = newBuffer;
                     }
-                    //for (int i = read - chunk; i < read-2; i++)
-                    //{
-                    //    if (buffer[i] == '.' && buffer[i + 1] == '\r' && buffer[i + 2] == '\n')
-                    //    {
-                    //        if (read < 4 || (buffer[i-2] == '\r' && buffer[i -1] == '\n'))
-                    //        {
-                    //            done = true;
-                    //            break;
-                    //        }
-                    //    }
-                    //}
                     // Looks for .\r\n (End of message)
                     if (read > 2 && buffer[read - 3] == '.' && buffer[read - 2] == '\r' && buffer[read - 1] == '\n')
                     {
