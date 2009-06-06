@@ -15,7 +15,9 @@ namespace NZBHags
         SettingsForm settingsForm;
         NewsServer server;
         QueueHandler handler;
+        public int currentspeed { get; set; }
         public uint dlspeed { get; set; }
+        private GraphGUI graphGUI;
 
         public MainGUI()
         {
@@ -23,8 +25,8 @@ namespace NZBHags
             handler = QueueHandler.Instance;
             flowLayoutPanel1.Controls.Add(new EmptyQueue());
             server = new NewsServer();
-            
-            
+            graphGUI = new GraphGUI();
+            panelGraph.Controls.Add(graphGUI);
         }
 
         private void LoadNZB(string filename)
@@ -129,11 +131,12 @@ namespace NZBHags
         private void UpdateUI(object sender, EventArgs e)
         {
             // Refresh connection view
-            dataGridView1.Refresh();
-            if (QueueHandler.Instance.changed)
-            {
-                QueueHandler.Instance.changed = false;
-            }
+            //if (QueueHandler.Instance.changed)
+            //{
+            //    QueueHandler.Instance.changed = false;
+            //}
+
+            // If queue has more than 1 item, check for EmptyQueue control and remove it
             if (flowLayoutPanel1.Controls.Count > 1)
             {
                 foreach (Control control in flowLayoutPanel1.Controls)
@@ -147,8 +150,11 @@ namespace NZBHags
             }
             else if (flowLayoutPanel1.Controls.Count == 0)
             {
+                // Insert EmptyQueue control if queue is empty
                 flowLayoutPanel1.Controls.Add(new EmptyQueue());
             }
+
+            // Updates Queue and Thread view
             foreach (IUpdatingControl control in flowLayoutPanel1.Controls)
             {
                 control.UpdateUI();
@@ -157,6 +163,10 @@ namespace NZBHags
             {
                 control.UpdateUI();
             }
+
+            // Updates speed graph
+            graphGUI.UpdateUI(currentspeed);
+
             // Append logs
             lock (typeof(Logging))
             {
@@ -189,6 +199,7 @@ namespace NZBHags
         // Called on formClosing, shuts down gracefully
         private void Shutdown(object sender, FormClosingEventArgs e)
         {
+            toolStripStatusLabel1.Text = "Shutting down...";
             if(server != null)
                 server.Disconnect();
             YDecoder.Instance.Shutdown();
@@ -196,11 +207,12 @@ namespace NZBHags
         }
 
         // Queue flowpanel layout
-        private void Layout(object sender, LayoutEventArgs e)
+        private new void Layout(object sender, LayoutEventArgs e)
         {
             foreach (Control ctrl in ((Control)sender).Controls)
             {
-                ((IUpdatingControl)ctrl).ResizeInLayoutEvent();
+                if(ctrl is IUpdatingControl)
+                    ((IUpdatingControl)ctrl).ResizeInLayoutEvent();
             }
         }
 

@@ -198,12 +198,12 @@ namespace NZBHags
         {
             sw.Reset();
             sw.Start();
-            NetworkStream stream = GetStream(); 
+            NetworkStream stream = GetStream();
             byte[] buffer = new byte[1024];
             int pos = 0;
             while ((stream.Read(buffer, pos, 1)) > 0 && keepAlive)
             {
-                
+
                 if (buffer[pos] == '\n')
                     break;
                 pos++;
@@ -216,6 +216,10 @@ namespace NZBHags
 
         public void Disconnect()
         {
+            while (!idle && currentSegment == null)
+            {
+                Thread.Sleep(10);
+            }
             idle = false;
             keepAlive = false;
             Write("QUIT\n");

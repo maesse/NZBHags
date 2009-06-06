@@ -71,6 +71,7 @@ namespace NZBHags
                 speed += (ulong)(tempprogress / 1000f);
                 speed /= 2;
                 labelSpeed.Text = string.Format("{0:n} KB/s", speed);
+                gui.currentspeed = (int)speed;
 
                 // Timeleft
                 if (speed != 0)

@@ -21,11 +21,12 @@ namespace NZBHags.GUI
 
         public void ResizeInLayoutEvent()
         {
-            this.Size = new Size(Parent.Size.Width - 6, 43);
+            this.Size = new Size(Parent.Size.Width - 24, 22);
         }
 
         public void UpdateUI()
         {
+            labelName.Text = "Thread (" + conn.id + "):";
             if (conn.currentSegment == null)
             {
                 labelFileJob.Text = "Idle";
@@ -39,7 +40,7 @@ namespace NZBHags.GUI
                     progressBar1.Maximum = conn.currentSegment.progress;
 
                 progressBar1.Value = conn.currentSegment.progress;
-                labelFileJob.Text = conn.currentSegment.yname + "(p:" + conn.currentSegment.ypart + ")";
+                labelFileJob.Text = conn.currentSegment.parent.filename + "(p:" + conn.currentSegment.id + ")";
             }
         }
     }

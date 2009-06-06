@@ -47,17 +47,6 @@ namespace NZBHags
             Properties.Settings.Default.Save();
         }
 
-        //public NewsServer(string name, string addr, string username, string password, int port, int connections, int timeout)
-        //{
-        //    this.name = name;
-        //    this.addr = addr;
-        //    this.username = username;
-        //    this.password = password;
-        //    this.port = port;
-        //    this.connections = connections;
-        //    this.timeout = timeout;
-        //}
-
         public void Connect()
         {
             Logging.Log("Connecting to {0}, spawning {1} connections", name, connections);
@@ -85,14 +74,6 @@ namespace NZBHags
         }
 
         
-
-        //public NewsServer()
-        //{
-        //    name = "";
-        //    addr = "";
-        //    username = "";
-        //    password = "";
-        //}
 
         //public NewsServer(SerializationInfo info, StreamingContext ctxt)
         //{

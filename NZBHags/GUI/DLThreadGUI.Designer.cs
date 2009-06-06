@@ -36,11 +36,10 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar1.Location = new System.Drawing.Point(303, 5);
+            this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar1.Location = new System.Drawing.Point(253, 5);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(171, 14);
+            this.progressBar1.Size = new System.Drawing.Size(98, 14);
             this.progressBar1.TabIndex = 5;
             // 
             // labelFileJob
@@ -48,7 +47,8 @@
             this.labelFileJob.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.labelFileJob.AutoSize = true;
-            this.labelFileJob.Location = new System.Drawing.Point(73, 6);
+            this.labelFileJob.Location = new System.Drawing.Point(68, 6);
+            this.labelFileJob.MaximumSize = new System.Drawing.Size(120, 0);
             this.labelFileJob.Name = "labelFileJob";
             this.labelFileJob.Size = new System.Drawing.Size(40, 13);
             this.labelFileJob.TabIndex = 4;
@@ -61,19 +61,19 @@
             this.labelName.AutoSize = true;
             this.labelName.Location = new System.Drawing.Point(3, 6);
             this.labelName.Name = "labelName";
-            this.labelName.Size = new System.Drawing.Size(64, 13);
+            this.labelName.Size = new System.Drawing.Size(59, 13);
             this.labelName.TabIndex = 3;
-            this.labelName.Text = "Thread Job:";
+            this.labelName.Text = "Thread (?):";
             // 
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(224, 6);
+            this.label1.Location = new System.Drawing.Point(196, 6);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(73, 13);
+            this.label1.Size = new System.Drawing.Size(51, 13);
             this.label1.TabIndex = 6;
-            this.label1.Text = "Part Progress:";
+            this.label1.Text = "Progress:";
             // 
             // DLThreadGUI
             // 
@@ -86,7 +86,7 @@
             this.Controls.Add(this.labelName);
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "DLThreadGUI";
-            this.Size = new System.Drawing.Size(477, 22);
+            this.Size = new System.Drawing.Size(354, 22);
             this.ResumeLayout(false);
             this.PerformLayout();
 
