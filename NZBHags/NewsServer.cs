@@ -65,9 +65,9 @@ namespace NZBHags
             Logging.Log("Disconnting from {0}", name);
             if (nntpConnections != null)
             {
-                for (int i = 0; i < nntpConnections.Length; i++)
+                foreach (NNTPConnection conn in nntpConnections)
                 {
-                    nntpConnections[i].Disconnect();
+                    conn.Disconnect();
                 }
             }
             isConnected = false;

@@ -13,7 +13,7 @@ namespace NZBHags
     public partial class MainGUI : Form
     {
         SettingsForm settingsForm;
-        NewsServer server;
+        public NewsServer server;
         QueueHandler handler;
         public int currentspeed { get; set; }
         public uint dlspeed { get; set; }
@@ -130,11 +130,7 @@ namespace NZBHags
         // Timer updates
         private void UpdateUI(object sender, EventArgs e)
         {
-            // Refresh connection view
-            //if (QueueHandler.Instance.changed)
-            //{
-            //    QueueHandler.Instance.changed = false;
-            //}
+            SpeedMonitor.Instance.tick();
 
             // If queue has more than 1 item, check for EmptyQueue control and remove it
             if (flowLayoutPanel1.Controls.Count > 1)
@@ -159,13 +155,14 @@ namespace NZBHags
             {
                 control.UpdateUI();
             }
+            
             foreach (IUpdatingControl control in panel1.Controls)
             {
                 control.UpdateUI();
             }
 
             // Updates speed graph
-            graphGUI.UpdateUI(currentspeed);
+            graphGUI.UpdateUI(SpeedMonitor.Instance.Speed);
 
             // Append logs
             lock (typeof(Logging))
@@ -199,11 +196,9 @@ namespace NZBHags
         // Called on formClosing, shuts down gracefully
         private void Shutdown(object sender, FormClosingEventArgs e)
         {
+            UIShutdown shutdown = new UIShutdown(this);
             toolStripStatusLabel1.Text = "Shutting down...";
-            if(server != null)
-                server.Disconnect();
-            YDecoder.Instance.Shutdown();
-            WriteCache.Instance.Shutdown();
+                shutdown.ShowDialog(this);
         }
 
         // Queue flowpanel layout

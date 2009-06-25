@@ -26,6 +26,7 @@ namespace NZBHags.GUI
 
         public void UpdateUI()
         {
+            
             labelName.Text = "Thread (" + conn.id + "):";
             if (conn.currentSegment == null)
             {

@@ -47,7 +47,7 @@
             this.labelFileJob.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.labelFileJob.AutoSize = true;
-            this.labelFileJob.Location = new System.Drawing.Point(68, 6);
+            this.labelFileJob.Location = new System.Drawing.Point(68, 7);
             this.labelFileJob.MaximumSize = new System.Drawing.Size(120, 0);
             this.labelFileJob.Name = "labelFileJob";
             this.labelFileJob.Size = new System.Drawing.Size(40, 13);

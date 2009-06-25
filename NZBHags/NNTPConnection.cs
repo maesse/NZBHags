@@ -34,6 +34,9 @@ namespace NZBHags
             keepAlive = true;
             sw = new Performance.Stopwatch();
 
+            // Register connection in SpeedMonitor
+            SpeedMonitor.Instance.RegisterConnection(this);
+
             ThreadStart job = new ThreadStart(Run);
             Thread thread = new Thread(job);
             thread.IsBackground = true;
@@ -43,28 +46,34 @@ namespace NZBHags
         private void Login()
         {
             string response;
-
-            Connect(serverInfo.addr, serverInfo.port);
-            response = Response().Substring(0, 3);
-
-            if (!response.Equals("200") && !response.Equals("201"))
+            try
             {
-                // abort
-                Logging.Log("(NNTPConnection({0})): Didn't get expected resonse.. got: {1}", id, response);
-                Disconnect();
-                return;
+                Connect(serverInfo.addr, serverInfo.port);
+                response = Response().Substring(0, 3);
+
+                if (!response.Equals("200") && !response.Equals("201"))
+                {
+                    // abort
+                    Logging.Log("(NNTPConnection({0})): Didn't get expected resonse.. got: {1}", id, response);
+                    Disconnect();
+                    return;
+                }
+
+                Write("authinfo user " + serverInfo.username + '\n');
+                response = Response();
+                Assert(response, "381"); // Pass required
+
+                Write("authinfo pass " + serverInfo.password + '\n');
+                response = Response();
+                Assert(response, "281"); // Ok
+
+                idle = true;
+                Logging.Log("(NNTPConnection({0})): Connected to server.", id);
             }
-
-            Write("authinfo user " + serverInfo.username + '\n');
-            response = Response();
-            Assert(response, "381"); // Pass required
-
-            Write("authinfo pass " + serverInfo.password + '\n');
-            response = Response();
-            Assert(response, "281"); // Ok
-
-            idle = true;
-            Logging.Log("(NNTPConnection({0})): Connected to server.", id);
+            catch (Exception ex)
+            {
+                Disconnect();
+            }
         }
         
 
@@ -81,9 +90,15 @@ namespace NZBHags
                     currentSegment = segment;
                     segment.status = Segment.Status.DOWNLOADING;
                     idle = false;
-                    segment.data = RecieveSegment(segment);
-                    YDecoder.Instance.DecodeSegment(segment);
-                    
+                    try
+                    {
+                        segment.data = RecieveSegment(segment);
+                        YDecoder.Instance.DecodeSegment(segment);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
                     idle = true;
                     currentSegment = null;
                 }
@@ -98,7 +113,10 @@ namespace NZBHags
 
         public byte[] RecieveSegment(Segment segment)
         {
+            try
+            {
             // Request body...
+
             Write("BODY "+ segment.addr +'\n');
             Assert(Response(), "222");
 
@@ -109,13 +127,13 @@ namespace NZBHags
             int read = 0;
             bool done = false;
             int chunk;
-            try
-            {
+            
                 while (!done && (chunk = stream.Read(buffer, read, buffer.Length - read)) > 0 && keepAlive)
                 {
                     read += chunk;
                     segment.parent.parent.progress += (ulong)chunk;
                     segment.progress += chunk;
+                    speed += (uint)chunk;
                     if (read == buffer.Length)
                     {
                         byte[] newBuffer = new byte[buffer.Length * 2];
@@ -132,18 +150,21 @@ namespace NZBHags
                         }
                     }
                 }
+                if (!keepAlive)
+                {
+                    throw new Exception();
+                }
+                byte[] returnarray = new byte[read - 3];
+                Array.Copy(buffer, returnarray, read - 3);
+                segment.bytes = read;
+                Logging.Log("(NNTPConnection(" + id + ")) SEGMENT Complete: id=" + segment.id + " bytes=" + read);
+                return returnarray;
             }
             catch (IOException ex)
             {
-                Logging.Log("(NNTPConnection(" + id + ")) IOException: " + ex.ToString());
-                Disconnect();
-                Login();
+                throw;
             }
-            byte[] returnarray = new byte[read-3];
-            Array.Copy(buffer, returnarray, read-3);
-            segment.bytes = read;
-            Logging.Log("(NNTPConnection(" + id + ")) SEGMENT Complete: id=" + segment.id + " bytes=" + read);
-            return returnarray;
+            
         }
 
         // Test for a particular responsecode
@@ -164,17 +185,23 @@ namespace NZBHags
 
         private void Write(string message)
         {
-            sw.Reset();
-            sw.Start();
-            System.Text.ASCIIEncoding en = new System.Text.ASCIIEncoding();
+            try
+            {
+                sw.Reset();
+                sw.Start();
+                System.Text.ASCIIEncoding en = new System.Text.ASCIIEncoding();
 
-            byte[] WriteBuffer = new byte[message.Length];
-            WriteBuffer = en.GetBytes(message);
+                byte[] WriteBuffer = new byte[message.Length];
+                WriteBuffer = en.GetBytes(message);
 
-            NetworkStream stream = GetStream();
-            stream.Write(WriteBuffer, 0, WriteBuffer.Length);
-            sw.Stop();
-            //Logging.Log("WRITE (" + sw.GetElapsedTimeSpan().Milliseconds + "ms):" + message);
+                NetworkStream stream = GetStream();
+                stream.Write(WriteBuffer, 0, WriteBuffer.Length);
+                sw.Stop();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         private string getValue(string line, string parm)
@@ -201,31 +228,40 @@ namespace NZBHags
             NetworkStream stream = GetStream();
             byte[] buffer = new byte[1024];
             int pos = 0;
-            while ((stream.Read(buffer, pos, 1)) > 0 && keepAlive)
-            {
 
-                if (buffer[pos] == '\n')
-                    break;
-                pos++;
+            try
+            {
+                while ((stream.Read(buffer, pos, 1)) > 0 && keepAlive)
+                {
+
+                    if (buffer[pos] == '\n')
+                        break;
+                    pos++;
+                }
+            }
+            catch (IOException ex) 
+            {
+                throw;
             }
             string returnstring = enc.GetString(buffer, 0, pos);
             sw.Stop();
-            //Logging.Log("READ (" + sw.GetElapsedTimeSpan().Milliseconds + "ms):" + returnstring);
             return returnstring;
         }
 
         public void Disconnect()
         {
-            while (!idle && currentSegment == null)
-            {
-                Thread.Sleep(10);
-            }
-            idle = false;
+            // DeRegister connection in SpeedMonitor
+            SpeedMonitor.Instance.DeRegisterConnection(this);
             keepAlive = false;
-            Write("QUIT\n");
+            int MaxWait = 1000; // 1 sec
+            int AccWait = 0; // Accumulated wait
+            int WaitStep = 10; // 10ms between checks
+            while (!idle && AccWait < MaxWait)
+            {
+                AccWait += WaitStep;
+                Thread.Sleep(WaitStep);
+            }
             Close();
         }
-
-
     }
 }

@@ -82,6 +82,12 @@
     <Compile Include="GUI\GraphGUI.Designer.cs">
       <DependentUpon>GraphGUI.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\UIShutdown.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\UIShutdown.Designer.cs">
+      <DependentUpon>UIShutdown.cs</DependentUpon>
+    </Compile>
     <Compile Include="lib\AboutBox1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -127,6 +133,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\GraphGUI.resx">
       <DependentUpon>GraphGUI.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\UIShutdown.resx">
+      <DependentUpon>UIShutdown.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="lib\AboutBox1.resx">
@@ -192,6 +202,7 @@
     <Compile Include="GUI\QueueControl.Designer.cs">
       <DependentUpon>QueueControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="SpeedMonitor.cs" />
     <Compile Include="WriteCache.cs" />
     <Compile Include="Decoder\YDecoder.cs" />
   </ItemGroup>
