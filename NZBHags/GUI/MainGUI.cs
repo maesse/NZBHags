@@ -23,13 +23,13 @@ namespace NZBHags
         {
             InitializeComponent();
             handler = QueueHandler.Instance;
-            flowLayoutPanel1.Controls.Add(new EmptyQueue());
+            flowLayoutPanel1.Controls.Add(new EmptyQueue(this));
             server = new NewsServer();
             graphGUI = new GraphGUI();
             panelGraph.Controls.Add(graphGUI);
         }
 
-        private void LoadNZB(string filename)
+        public void LoadNZB(string filename)
         {
             FileCollection nzb = NZBFileHandler.loadFile(filename);
             nzb.queue = NZBFileHandler.genQueue(nzb.files);
@@ -147,7 +147,7 @@ namespace NZBHags
             else if (flowLayoutPanel1.Controls.Count == 0)
             {
                 // Insert EmptyQueue control if queue is empty
-                flowLayoutPanel1.Controls.Add(new EmptyQueue());
+                flowLayoutPanel1.Controls.Add(new EmptyQueue(this));
             }
 
             // Updates Queue and Thread view
@@ -156,10 +156,7 @@ namespace NZBHags
                 control.UpdateUI();
             }
             
-            foreach (IUpdatingControl control in panel1.Controls)
-            {
-                control.UpdateUI();
-            }
+            
 
             // Updates speed graph
             graphGUI.UpdateUI(SpeedMonitor.Instance.Speed);
@@ -218,6 +215,35 @@ namespace NZBHags
             prc.StartInfo.FileName = windir + @"\explorer.exe";
             prc.StartInfo.Arguments = Properties.Settings.Default.outputPath;
             prc.Start();
+        }
+
+        private void UpdateConnUI(object sender, EventArgs e)
+        {
+            foreach (IUpdatingControl control in panel1.Controls)
+            {
+                control.UpdateUI();
+            }
+        }
+
+        private void ResetStatus(object sender, EventArgs e)
+        {
+
+            toolStripStatusLabel1.Text = "";
+        }
+
+        private void StatusConnect(object sender, EventArgs e)
+        {
+            toolStripStatusLabel1.Text = "Connect/Disconnect";
+        }
+
+        private void StatusOpenNZB(object sender, EventArgs e)
+        {
+            toolStripStatusLabel1.Text = "Open .NZB...";
+        }
+
+        private void StatusOpenFolder(object sender, EventArgs e)
+        {
+            toolStripStatusLabel1.Text = "Open Output folder...";
         }
 
     }

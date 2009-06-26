@@ -27,8 +27,11 @@ namespace NZBHags
             {
                 foreach (NNTPConnection conn in Connections)
                 {
-                    accumulatedValue += conn.speed;
-                    conn.speed = 0;
+                    lock (conn)
+                    {
+                        accumulatedValue += conn.speed;
+                        conn.speed = 0;
+                    }
                 }
             }
 

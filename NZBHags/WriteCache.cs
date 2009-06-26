@@ -11,7 +11,7 @@ namespace NZBHags
     public sealed class WriteCache
     {
         static readonly WriteCache instance = new WriteCache();
-        static int MAXCACHE = 100; // MB
+        static uint MAXCACHE = Properties.Settings.Default.cachesize; // MB
         static int STREAMTIMEOUT = 20; // seconds
 
         private ulong cacheSize; // Current cache size

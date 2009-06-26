@@ -12,7 +12,8 @@ namespace NZBHags
     {
         PAUSE,
         DOWNLOADING,
-        QUEUED
+        QUEUED,
+        DOPAR2
     }
 
     public class FileCollection

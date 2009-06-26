@@ -76,6 +76,12 @@
     <Compile Include="GUI\EmptyQueue.Designer.cs">
       <DependentUpon>EmptyQueue.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\GeneralSettingsGUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\GeneralSettingsGUI.Designer.cs">
+      <DependentUpon>GeneralSettingsGUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\GraphGUI.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -122,6 +128,7 @@
     </Compile>
     <Compile Include="NZBFileHandler.cs" />
     <Compile Include="lib\Program.cs" />
+    <Compile Include="Par2Handler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="GUI\DLThreadGUI.resx">
       <DependentUpon>DLThreadGUI.cs</DependentUpon>
@@ -129,6 +136,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\EmptyQueue.resx">
       <DependentUpon>EmptyQueue.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\GeneralSettingsGUI.resx">
+      <DependentUpon>GeneralSettingsGUI.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\GraphGUI.resx">
@@ -220,6 +231,9 @@
     <None Include="app.config" />
     <None Include="Resources\old-hag-small1.jpg" />
     <Content Include="lib\ydec.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\par2.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\Untitled-11.png" />

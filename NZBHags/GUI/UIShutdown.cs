@@ -51,6 +51,12 @@ namespace NZBHags.GUI
 
             // Shutdown WriteCache
             WriteCache.Instance.Shutdown();
+
+            // Shutdown PAR2 Handler
+            Par2Handler.Instance.Shutdown();
+
+            // Shutdown QueueHandler
+            QueueHandler.Instance.Shutdown();
         }
 
         // Dispose form when async shutdown completes

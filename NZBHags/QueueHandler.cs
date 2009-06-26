@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections;
+using System.Threading;
 
 namespace NZBHags
 {
@@ -13,11 +14,48 @@ namespace NZBHags
         private int nextId = 0;
         public ArrayList collections;
         public bool changed;
+        private bool KeepRunning = true;
         
         QueueHandler()
         {
             collections = new ArrayList();
             currentFileJob = new FileJob();
+            // Inits thread
+            ThreadStart job = new ThreadStart(Run);
+            Thread thread = new Thread(job);
+            thread.IsBackground = true;
+            thread.Start();
+        }
+
+        private void Run()
+        {
+            while (KeepRunning)
+            {
+                for (int i = 0; i < collections.Count; i++)
+                {
+                    FileCollection coll = (FileCollection)collections[i];
+                    if (coll.progress >= (coll.size / 2))
+                    {
+                        bool allComplete = false;
+                        foreach (FileJob job in coll.files)
+                        {
+                            if (!job.complete)
+                            {
+                                allComplete = false;
+                                break;
+                            } else
+                                allComplete = true;
+                        }
+                        if (allComplete == true)
+                        {
+                            coll.status = CollectionStatus.DOPAR2;
+                            Par2Handler.Instance.AddCollection(coll);
+                        }
+                    }
+                }
+
+                Thread.Sleep(1000);
+            }
         }
 
         public void AddCollection(FileCollection collection)
@@ -115,7 +153,7 @@ namespace NZBHags
                 FileCollection coll = (FileCollection)collections[0];
                 currentFileJob = (FileJob)coll.queue.Dequeue();
             }
-            lock (currentFileJob)
+            lock (this)
             {
 
                 if (currentFileJob.queue.Count == 0)
@@ -150,6 +188,11 @@ namespace NZBHags
             {
                 return instance;
             }
+        }
+
+        public void Shutdown()
+        {
+            KeepRunning = false;
         }
     }
 }

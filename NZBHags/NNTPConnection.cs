@@ -115,25 +115,29 @@ namespace NZBHags
         {
             try
             {
-            // Request body...
+                // Request body...
 
-            Write("BODY "+ segment.addr +'\n');
-            Assert(Response(), "222");
+                Write("BODY "+ segment.addr +'\n');
+                Assert(Response(), "222");
 
-            NetworkStream stream = GetStream();
-            stream.ReadTimeout = 10000;
-            
-            byte[] buffer = new byte[segment.bytes];
-            int read = 0;
-            bool done = false;
-            int chunk;
+                NetworkStream stream = GetStream();
+                    
+                stream.ReadTimeout = 10000;
+                
+                byte[] buffer = new byte[segment.bytes];
+                int read = 0;
+                bool done = false;
+                int chunk;
             
                 while (!done && (chunk = stream.Read(buffer, read, buffer.Length - read)) > 0 && keepAlive)
                 {
                     read += chunk;
                     segment.parent.parent.progress += (ulong)chunk;
                     segment.progress += chunk;
-                    speed += (uint)chunk;
+                    lock (this)
+                    {
+                        speed += (uint)chunk;
+                    }
                     if (read == buffer.Length)
                     {
                         byte[] newBuffer = new byte[buffer.Length * 2];

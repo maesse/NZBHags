@@ -12,8 +12,10 @@ namespace NZBHags
 {
     public partial class EmptyQueue : UserControl, IUpdatingControl
     {
-        public EmptyQueue()
+        private MainGUI main;
+        public EmptyQueue(MainGUI main)
         {
+            this.main = main;
             InitializeComponent();
         }
 
@@ -24,6 +26,16 @@ namespace NZBHags
 
         public void UpdateUI()
         {
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            // open file
+            DialogResult result = main.openFileDialog1.ShowDialog(this);
+            if (result.Equals(DialogResult.OK))
+            {
+                main.LoadNZB(main.openFileDialog1.FileName);
+            }
         }
     }
 }

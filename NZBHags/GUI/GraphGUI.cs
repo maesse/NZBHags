@@ -24,6 +24,7 @@ namespace NZBHags.GUI
         // Text
         private Font font = new Font("Arial", 9);
         private Brush textBrush = Brushes.Khaki;
+        private Brush textShadowBrush = Brushes.Black;
 
         // Background
         private LinearGradientBrush backgroundBrush;
@@ -58,7 +59,7 @@ namespace NZBHags.GUI
             drawAverage = true;
             // Intitialize Graph background colors
             backgroundBrush = new LinearGradientBrush(new Rectangle(0, 0, Size.Width, Size.Height), backgroundColor1, backgroundColor2, LinearGradientMode.Vertical);
-
+            this.SetStyle(ControlStyles.DoubleBuffer, true);
             // Init graphics object
             g = Graphics.FromHwnd(panel1.Handle);
             if(antiAliasing)
@@ -111,7 +112,9 @@ namespace NZBHags.GUI
                     average += (ulong)values[i];
             }
             if (drawAverage && values.Length > 0)
-                averageValue = (int)(average / (ulong)values.Length);
+            {
+                averageValue = (int)((average * 2) / (ulong)values.Length);
+            }
             float valueDivider;
             if (maxval > 0)
             {
@@ -175,7 +178,11 @@ namespace NZBHags.GUI
             sCur = g.MeasureString(cur, font);
             sMax = g.MeasureString(max, font);
             
+            // current-speed text
+            g.DrawString(cur, font, textShadowBrush, new PointF(Size.Width - sCur.Width - 1, Size.Height - sCur.Height - 4));
             g.DrawString(cur, font, textBrush, new PointF(Size.Width-sCur.Width-2, Size.Height-sCur.Height-5));
+            // Avg-speed text
+            g.DrawString(max, font, textShadowBrush, new PointF(Size.Width - sMax.Width - 1, 1f));
             g.DrawString(max, font, textBrush, new PointF(Size.Width-sMax.Width-2, 0f));
             if (drawAverage && values.Length > 0)
             {
@@ -188,6 +195,7 @@ namespace NZBHags.GUI
                 {
                     avgy = Size.Height - sAvg.Height - 5;
                 }
+                g.DrawString(avg, font, textShadowBrush, new PointF(1, avgy+1));
                 g.DrawString(avg, font, textBrush, new PointF(0, avgy));
             }
         }
