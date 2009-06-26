@@ -59,7 +59,7 @@ namespace NZBHags.GUI
             drawAverage = true;
             // Intitialize Graph background colors
             backgroundBrush = new LinearGradientBrush(new Rectangle(0, 0, Size.Width, Size.Height), backgroundColor1, backgroundColor2, LinearGradientMode.Vertical);
-            this.SetStyle(ControlStyles.DoubleBuffer, true);
+           // this.SetStyle(ControlStyles.DoubleBuffer, true);
             // Init graphics object
             g = Graphics.FromHwnd(panel1.Handle);
             if(antiAliasing)
@@ -71,6 +71,7 @@ namespace NZBHags.GUI
             gridScrollPixels = (int)((float)Size.Width / (float)MAXVALUES);
             // Testing values
             //TestValues();
+            
         }
 
         private void TestValues()
@@ -92,6 +93,7 @@ namespace NZBHags.GUI
             gridScrollPixels = ((float)Size.Width / (float)MAXVALUES);
             UpdateUI();
         }
+
 
         // Updates graph
         public void UpdateUI()
@@ -134,7 +136,7 @@ namespace NZBHags.GUI
             }
 
             // Clear panel
-            g.Clear(Color.White);
+            //g.Clear(Color.White);
 
             // Draw background
             g.FillRectangle(backgroundBrush, new Rectangle(0, 0, Size.Width, Size.Height));
@@ -240,5 +242,6 @@ namespace NZBHags.GUI
 
             UpdateUI();
         }
+
     }
 }
