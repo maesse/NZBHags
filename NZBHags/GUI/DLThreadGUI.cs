@@ -10,13 +10,19 @@ using NZBHags.lib;
 
 namespace NZBHags.GUI
 {
+    public delegate void UpdateDelegate();
     public partial class DLThreadGUI : UserControl, IUpdatingControl
     {
+        
+        
         public NNTPConnection conn;
+        public UpdateDelegate updateDelegate;
         public DLThreadGUI(NNTPConnection connection)
         {
             conn = connection;
+            updateDelegate = new UpdateDelegate(this.UpdateUI);
             InitializeComponent();
+
         }
 
         public void ResizeInLayoutEvent()

@@ -19,15 +19,18 @@ namespace NZBHags
     public class FileCollection
     {
         public string name { get; set; }
-        public ArrayList files { get; set; }
-        public ulong size; // kb
+        public List<FileJob> files { get; set; }
+        public ulong TotalSize; // kb
         public uint speed; // bytes/s
-        public ulong progress; // kb
+        public ulong ProgressKB; // kb
+        public int FileCount { get { return (files != null) ? files.Count : 0; } }
+        private int _FileProgress = 0;
+        public int FileProgress { get { return _FileProgress;  } set { _FileProgress = value; } } // 0 -> files.Count
         public int id { get; set; }
-        public Queue queue { get; set; }
+        //public Queue queue { get; set; }
         public CollectionStatus status { get; set; }
 
-        public FileCollection(string name, ArrayList files)
+        public FileCollection(string name, List<FileJob> files)
         {
             this.name = name;
             this.files = files;
@@ -36,7 +39,23 @@ namespace NZBHags
         public FileCollection(string name)
         {
             this.name = name;
-            this.files = files;
+            this.files = new List<FileJob>();
+        }
+
+        
+
+        public void GenerateQueue()
+        {
+            
+        }
+
+        public void CalculateTotalSize()
+        {
+            TotalSize = 0;
+            foreach (FileJob job in files)
+            {
+                TotalSize += job.size;
+            }
         }
     }
 }

@@ -29,21 +29,21 @@ namespace NZBHags
             settings.XmlResolver = new XmlFileResolver();
 
             // Create new FIleCOllection object
+
             FileCollection collection = new FileCollection(getPrettyFilename(filename));
 
             // Parse file into XmlDocument
             document.Load(XmlReader.Create(stream, settings));
             stream.Close();
 
-            ArrayList files = ParseXML(document, collection);
+            List<FileJob> files = ParseXML(document, collection);
             collection.files = files;
-            foreach (FileJob job in files)
-            {
-                collection.size += job.size;
-            }
+
+            // Calculate collection size
+            collection.CalculateTotalSize();
             // Loadtime measuring
             sw.Stop();
-            Logging.Log("Loading NZB took {0} ms", sw.GetElapsedTimeSpan().TotalMilliseconds);
+            Logging.Instance.Log("Loading {0}. Took {1}ms", filename, sw.GetElapsedTimeSpan().TotalMilliseconds);
             return collection;
         }
 
@@ -54,28 +54,28 @@ namespace NZBHags
             return filename.Substring(dir, filename.Length-dir);
         }
 
-        // Generates queues for a filecollection object
-        public static Queue genQueue(ArrayList list)
-        {
-            Queue queue = new Queue(list.Count);
-            foreach (FileJob job in list)
-            {
-                job.queue = new Queue(job.segments.Count);
-                foreach (Segment seg in job.segments)
-                {
-                    job.queue.Enqueue(seg);
-                }
-                queue.Enqueue(job);
-            }
-            return queue;
-        }
+        //// Generates queues for a filecollection object
+        //public static Queue genQueue(ArrayList list)
+        //{
+        //    Queue queue = new Queue(list.Count);
+        //    foreach (FileJob job in list)
+        //    {
+        //        job.queue = new Queue(job.segments.Count);
+        //        foreach (Segment seg in job.segments)
+        //        {
+        //            job.queue.Enqueue(seg);
+        //        }
+        //        queue.Enqueue(job);
+        //    }
+        //    return queue;
+        //}
 
 
         // Parses XML structure into file objects
-        private static ArrayList ParseXML(XmlDocument document, FileCollection filecollection)
+        private static List<FileJob> ParseXML(XmlDocument document, FileCollection filecollection)
         {
             XmlNodeList nodes = document.GetElementsByTagName("file");
-            ArrayList files = new ArrayList();
+            List<FileJob> files = new List<FileJob>();
             Random random = new Random();
             int collectionID = random.Next();
             int fileId = 0;

@@ -59,7 +59,8 @@ namespace NZBHags
             else
             {
                 // CRC failed
-                Logging.Log("(ValidateCRC) (id=" + id + ") FAILED: Expected crc: " + crc + " - Actual crc: " + calculatedCRC);
+                
+                Logging.Instance.Log("(ValidateCRC) (id=" + id + ") FAILED: Expected crc: " + crc + " - Actual crc: " + calculatedCRC);
                 crcOk = false;
             }
 

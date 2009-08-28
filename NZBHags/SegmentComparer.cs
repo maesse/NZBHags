@@ -6,9 +6,10 @@ using System.Text;
 
 namespace NZBHags
 {
-    class SegmentComparer : IComparer
+    class SegmentComparer : IComparer<Segment>
     {
-        int IComparer.Compare(object obj1, object obj2) {
+        int IComparer<Segment>.Compare(Segment obj1, Segment obj2)
+        {
             Segment seg1 = (Segment)obj1;
             Segment seg2 = (Segment)obj2;
 

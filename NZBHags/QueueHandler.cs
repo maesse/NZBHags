@@ -12,7 +12,9 @@ namespace NZBHags
         static readonly QueueHandler instance = new QueueHandler();
         private FileJob currentFileJob;
         private int nextId = 0;
+
         public ArrayList collections;
+
         public bool changed;
         private bool KeepRunning = true;
         
@@ -34,7 +36,7 @@ namespace NZBHags
                 for (int i = 0; i < collections.Count; i++)
                 {
                     FileCollection coll = (FileCollection)collections[i];
-                    if (coll.progress >= (coll.size / 2))
+                    if (coll.ProgressKB >= (coll.TotalSize / 2))
                     {
                         bool allComplete = false;
                         foreach (FileJob job in coll.files)
@@ -61,7 +63,7 @@ namespace NZBHags
         public void AddCollection(FileCollection collection)
         {
             collection.status = CollectionStatus.QUEUED;
-            collection.queue = NZBFileHandler.genQueue(collection.files);
+            //collection.queue = NZBFileHandler.genQueue(collection.files);
             collection.id = nextId;
             nextId++;
             collections.Add(collection);
@@ -151,21 +153,21 @@ namespace NZBHags
                     return null;
                 }
                 FileCollection coll = (FileCollection)collections[0];
-                currentFileJob = (FileJob)coll.queue.Dequeue();
+                currentFileJob = coll.files[coll.FileProgress++];
             }
             lock (this)
             {
 
-                if (currentFileJob.queue.Count == 0)
+                if ((currentFileJob.SegmentCount - currentFileJob.SegmentProgress) == 0)
                 {
                     if (collections.Count != 0)
                     {
                         foreach (FileCollection col in collections)
                         {
-                            if (col.status != CollectionStatus.PAUSE && col.queue.Count > 0)
+                            if (col.status != CollectionStatus.PAUSE && (col.FileCount - col.FileProgress) > 0)
                             {
                                 col.status = CollectionStatus.DOWNLOADING;
-                                currentFileJob = (FileJob)col.queue.Dequeue();
+                                currentFileJob = (FileJob)col.files[col.FileProgress++];
                                 break;
                             }
                         }
@@ -174,7 +176,7 @@ namespace NZBHags
                 }
                 else if (currentFileJob.parent.status != CollectionStatus.PAUSE)
                 {
-                    return (Segment)currentFileJob.queue.Dequeue();
+                    return (Segment)currentFileJob.segments[currentFileJob.SegmentProgress++];
                 }
                 else
                     return null;

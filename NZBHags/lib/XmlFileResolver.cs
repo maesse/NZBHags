@@ -21,7 +21,7 @@ namespace NZBHags
             //Logging.Log("Redirecting DTD query.. " + uri.OriginalString);
             if (uri.AbsolutePath.Contains("NZB"))
             {
-                Logging.Log("Redirecting DTD query.. ");
+                Logging.Instance.Log("Redirecting DTD query.. ");
                 return File.Open("lib\\nzb-1.0.dtd", FileMode.Open);
                 
             }

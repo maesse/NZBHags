@@ -6,23 +6,38 @@ using System.Text;
 
 namespace NZBHags
 {
-    public class Logging
+    sealed class Logging
     {
+        private static Logging _Instance = new Logging();
         static public ArrayList logList = new ArrayList();
+        public MainGUI maingui;
+
+        Logging() { }
 
 
-        public static void Log(string str) 
+        public void Log(string str)
         {
             lock (typeof(Logging))
             {
                 //logList.Add(str + '\n');
                 System.Console.WriteLine(str);
+                if (maingui != null)
+                {
+                    maingui.logTextBox.Invoke(maingui.logHandler, str);
+                   // maingui.logHandler.Invoke(str);
+                    // Fire delegate
+                }
             }
         }
 
-        public static void Log(string str, params object[] more)
+        public void Log(string str, params object[] more)
         {
             Log(string.Format(str, more));
+        }
+
+        public static Logging Instance
+        {
+            get { return _Instance; }
         }
     }
 }

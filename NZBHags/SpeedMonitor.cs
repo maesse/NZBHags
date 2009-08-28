@@ -23,8 +23,8 @@ namespace NZBHags
         {
             uint accumulatedValue = 0;
 
-            lock (Connections)
-            {
+            //lock (Connections)
+            //{
                 foreach (NNTPConnection conn in Connections)
                 {
                     lock (conn)
@@ -33,7 +33,7 @@ namespace NZBHags
                         conn.speed = 0;
                     }
                 }
-            }
+            //}
 
             Speed = accumulatedValue;
         }

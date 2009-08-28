@@ -160,7 +160,7 @@ namespace NZBHags.GUI
             // Draw Average
             if (drawAverage && values.Length > 0)
             {
-                int y = (int)((float)averageValue * valueDivider * -1f *2) + (Size.Height - 6);
+                int y = (int)((float)averageValue * valueDivider * -1f) + (Size.Height - 6);
                 g.DrawLine(averagePen, new Point(0, y), new Point(Size.Width, y));
             }
 
@@ -192,7 +192,7 @@ namespace NZBHags.GUI
 
                 sAvg = g.MeasureString(avg, font);
                 // Align average text to line
-                float avgy = ((float)averageValue * valueDivider * -1f *2) + (Size.Height - 6);
+                float avgy = ((float)averageValue * valueDivider * -1f) + (Size.Height - 6);
                 if ((avgy + 6 + sAvg.Height) > Size.Height)
                 {
                     avgy = Size.Height - sAvg.Height - 5;

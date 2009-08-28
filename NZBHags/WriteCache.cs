@@ -91,7 +91,8 @@ namespace NZBHags
 
             if (segment.id == 1)
             {
-                Logging.Log("(Cache) Recieved first segment");
+
+                Logging.Instance.Log("(Cache) Recieved first segment");
                 // First part in a filejob..
                 segment.parent.outputfilename = getFilename(ref segment);
                 saveSegment(segment);
@@ -100,12 +101,12 @@ namespace NZBHags
             else if (segment.id - 1 == segment.parent.saveprogress)
             {
                 // Append to file
-                Logging.Log("(Cache) Recieved awaited segment");
+                Logging.Instance.Log("(Cache) Recieved awaited segment");
                 saveSegment(segment);
             }
             else if (cacheSize + (ulong)segment.bytes > (ulong)MAXCACHE * 1024 * 1024)
             {
-                Logging.Log("Cache too big, saving to disk");
+                Logging.Instance.Log("Cache too big, saving to disk");
                 segment.status = Segment.Status.TEMPCACHED;
                 segment.tempname = "temp" + new Random().Next(9999999);
 
@@ -121,7 +122,7 @@ namespace NZBHags
             else
             {
                 // memorycache
-                Logging.Log("(Cache) Saving segment to cache");
+                Logging.Instance.Log("(Cache) Saving segment to cache");
                 segments.Add(segment);
                 cacheSize += (ulong)segment.bytes;
             }

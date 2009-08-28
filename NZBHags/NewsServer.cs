@@ -47,22 +47,23 @@ namespace NZBHags
             Properties.Settings.Default.Save();
         }
 
-        public void Connect()
+        public void Connect(MainGUI mainGui)
         {
-            Logging.Log("Connecting to {0}, spawning {1} connections", name, connections);
+            Logging.Instance.Log("Connecting to {0}, spawning {1} connections", name, connections);
             nntpConnections = new NNTPConnection[connections];
 
             // test code
             for (int i = 0; i < connections; i++ )
             {
                 nntpConnections[i] = new NNTPConnection(i, this, QueueHandler.Instance);
+                nntpConnections[i].mainGui = mainGui;
             }
             isConnected = true;
         }
 
         public void Disconnect()
         {
-            Logging.Log("Disconnting from {0}", name);
+            Logging.Instance.Log("Disconnting from {0}", name);
             if (nntpConnections != null)
             {
                 foreach (NNTPConnection conn in nntpConnections)

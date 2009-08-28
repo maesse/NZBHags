@@ -17,7 +17,7 @@ namespace NZBHags
         public bool idle { get; set; }
         public uint speed { get; set; }
         public Segment currentSegment { get; set; }
-
+        public MainGUI mainGui;
 
         private NewsServer serverInfo;
         private QueueHandler handler;
@@ -54,7 +54,7 @@ namespace NZBHags
                 if (!response.Equals("200") && !response.Equals("201"))
                 {
                     // abort
-                    Logging.Log("(NNTPConnection({0})): Didn't get expected resonse.. got: {1}", id, response);
+                    Logging.Instance.Log("(NNTPConnection({0})): Didn't get expected resonse.. got: {1}", id, response);
                     Disconnect();
                     return;
                 }
@@ -68,7 +68,7 @@ namespace NZBHags
                 Assert(response, "281"); // Ok
 
                 idle = true;
-                Logging.Log("(NNTPConnection({0})): Connected to server.", id);
+                Logging.Instance.Log("(NNTPConnection({0})): Connected to server.", id);
             }
             catch (Exception ex)
             {
@@ -132,7 +132,7 @@ namespace NZBHags
                 while (!done && (chunk = stream.Read(buffer, read, buffer.Length - read)) > 0 && keepAlive)
                 {
                     read += chunk;
-                    segment.parent.parent.progress += (ulong)chunk;
+                    segment.parent.parent.ProgressKB += (ulong)chunk;
                     segment.progress += chunk;
                     lock (this)
                     {
@@ -144,6 +144,7 @@ namespace NZBHags
                         Array.Copy(buffer, newBuffer, buffer.Length);
                         buffer = newBuffer;
                     }
+                    mainGui.UpdateSingleThreadInfo(this);
                     // Looks for .\r\n (End of message)
                     if (read > 2 && buffer[read - 3] == '.' && buffer[read - 2] == '\r' && buffer[read - 1] == '\n')
                     {
@@ -161,7 +162,7 @@ namespace NZBHags
                 byte[] returnarray = new byte[read - 3];
                 Array.Copy(buffer, returnarray, read - 3);
                 segment.bytes = read;
-                Logging.Log("(NNTPConnection(" + id + ")) SEGMENT Complete: id=" + segment.id + " bytes=" + read);
+                Logging.Instance.Log("(NNTPConnection(" + id + ")) SEGMENT Complete: id=" + segment.id + " bytes=" + read);
                 return returnarray;
             }
             catch (IOException ex)
@@ -181,7 +182,7 @@ namespace NZBHags
             if (!response.Substring(0, 3).Equals(str))
             {
                 // abort
-                Logging.Log("(NNTPConnection(" + id + ")) Could not connect... got message: " + response);
+                Logging.Instance.Log("(NNTPConnection(" + id + ")) Could not connect... got message: " + response);
                 Disconnect();
                 return;
             }

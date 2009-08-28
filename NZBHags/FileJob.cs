@@ -18,8 +18,11 @@ namespace NZBHags
         public int date { get; set; }
 
         // segments
-        public ArrayList segments { get; set; }
-        public Queue queue { get; set; }
+        public List<Segment> segments { get; set; }
+        private int _SegmentProgress = 0;
+        public int SegmentProgress { get { return _SegmentProgress; } set { _SegmentProgress = value; } } // 0 -> files.Count
+        public int SegmentCount { get { return (segments != null) ? segments.Count : 0; } }
+        //public Queue queue { get; set; }
         public int yparts { get; set; }
 
         // File info
@@ -39,13 +42,13 @@ namespace NZBHags
             this.parent = parent;
             Random random = new Random();
             filename = ""+random.Next(99999);
-            segments = new ArrayList();
+            segments = new List<Segment>();
             groups = new ArrayList();
             complete = false;
         }
         public FileJob()
         {
-            queue = new Queue();
+            //queue = new Queue();
         }
     }
 }

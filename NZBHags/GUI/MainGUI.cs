@@ -12,29 +12,33 @@ namespace NZBHags
 {
     public partial class MainGUI : Form
     {
+        public delegate void LogHandler(string log);
         SettingsForm settingsForm;
         public NewsServer server;
         QueueHandler handler;
         public int currentspeed { get; set; }
         public uint dlspeed { get; set; }
+        public LogHandler logHandler;
         private GraphGUI graphGUI;
-
+        private DLThreadGUI[] dlthreads;
         public MainGUI()
         {
             InitializeComponent();
+            logHandler = new LogHandler(LogString);
             handler = QueueHandler.Instance;
             flowLayoutPanel1.Controls.Add(new EmptyQueue(this));
             server = new NewsServer();
             graphGUI = new GraphGUI();
             panelGraph.Controls.Add(graphGUI);
+            Logging.Instance.maingui = this;
         }
 
         public void LoadNZB(string filename)
         {
             FileCollection nzb = NZBFileHandler.loadFile(filename);
-            nzb.queue = NZBFileHandler.genQueue(nzb.files);
             QueueHandler.Instance.AddCollection(nzb);
             flowLayoutPanel1.Controls.Add(new QueueControl(nzb, this));
+            UpdateUI(this, null);
         }
 
         private void OpenNzbDialog(object sender, EventArgs e)
@@ -68,6 +72,14 @@ namespace NZBHags
 
         }
 
+        public void UpdateSingleThreadInfo(NNTPConnection conn)
+        {
+            if (dlthreads != null)
+            {
+                dlthreads[conn.id].Invoke(dlthreads[conn.id].updateDelegate);
+            }
+        }
+
         // Connect/Disconnect
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
@@ -79,21 +91,24 @@ namespace NZBHags
                     panel1.Controls.Clear();
                     
                 }
+                dlthreads = null;
                 server.Disconnect();
                 toolStripButton1.Image = NZBHags.Properties.Resources.connect_established;
             }
             else
             {
-                server.Connect();
+                server.Connect(this);
                 toolStripButton1.Image = NZBHags.Properties.Resources.connect_no;
+                dlthreads = new DLThreadGUI[server.connections];
                 for (int i = 0; i < server.connections; i++ )
                 {
                     
                     //nNTPConnectionBindingSource1.Add(server.nntpConnections[i]);
                     //flowLayoutPanelThreads.Controls.Add(new DLThreadGUI(server.nntpConnections[i]));
                     //listBox1.Controls.Add(new DLThreadGUI(server.nntpConnections[i]));
-                    Control ctrl = new DLThreadGUI(server.nntpConnections[i]);
+                    DLThreadGUI ctrl = new DLThreadGUI(server.nntpConnections[i]);
                     ctrl.Location = new System.Drawing.Point(0, panel1.Controls.Count * 23);
+                    dlthreads[i] = ctrl;
                     panel1.Controls.Add(ctrl);
                     
                 }
@@ -104,6 +119,7 @@ namespace NZBHags
         {
             QueueHandler.Instance.removeCollection(control.collection);
             flowLayoutPanel1.Controls.Remove(control);
+            UpdateUI(this, null);
         }
 
         public void incrQueue(QueueControl control)
@@ -115,8 +131,14 @@ namespace NZBHags
                 int index = flowLayoutPanel1.Controls.GetChildIndex(control);
                 flowLayoutPanel1.Controls.SetChildIndex(flowLayoutPanel1.Controls[index++], index);
                 flowLayoutPanel1.Controls.SetChildIndex(control, index++);
-                
+                UpdateUI(this, null);
             //}
+        }
+
+        public void LogString(string log)
+        {
+            log = "[" + DateTime.Now.ToString("HH:mm:ss") + "] " + log + '\n';
+            logTextBox.AppendText(log);
         }
 
         public void decrQueue(QueueControl control)
@@ -125,6 +147,7 @@ namespace NZBHags
             int index = flowLayoutPanel1.Controls.GetChildIndex(control);
             flowLayoutPanel1.Controls.SetChildIndex(flowLayoutPanel1.Controls[index--], index);
             flowLayoutPanel1.Controls.SetChildIndex(control, index--);
+            UpdateUI(this, null);
         }
 
         // Timer updates
@@ -135,14 +158,14 @@ namespace NZBHags
             // If queue has more than 1 item, check for EmptyQueue control and remove it
             if (flowLayoutPanel1.Controls.Count > 1)
             {
-                foreach (Control control in flowLayoutPanel1.Controls)
-                {
-                    if (control is EmptyQueue)
+                //foreach (Control control in flowLayoutPanel1.Controls)
+                //{
+                    if (flowLayoutPanel1.Controls[0] is EmptyQueue)
                     {
-                        flowLayoutPanel1.Controls.Remove(control);
-                        break;
+                        flowLayoutPanel1.Controls.Remove(flowLayoutPanel1.Controls[0]);
+                        //break;
                     }
-                }
+                //}
             }
             else if (flowLayoutPanel1.Controls.Count == 0)
             {
@@ -161,19 +184,18 @@ namespace NZBHags
             // Updates speed graph
             graphGUI.UpdateUI(SpeedMonitor.Instance.Speed);
 
-            // Append logs
-            lock (typeof(Logging))
-            {
-                foreach (string str in Logging.logList)
-                {
-                    logTextBox.AppendText(str);
-                }
-                Logging.logList.Clear();
-            }
+            //// Append logs
+            //lock (typeof(Logging))
+            //{
+            //    foreach (string str in Logging.logList)
+            //    {
+            //        logTextBox.AppendText(str);
+            //    }
+            //    Logging.logList.Clear();
+            //}
         }
 
-        // Open nzb
-        private void toolStripButton2_Click(object sender, EventArgs e)
+        public void OpenNzbFileDialog()
         {
             // open file
             DialogResult result = openFileDialog1.ShowDialog(this);
@@ -181,6 +203,12 @@ namespace NZBHags
             {
                 LoadNZB(openFileDialog1.FileName);
             }
+        }
+
+        // Open nzb
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            OpenNzbFileDialog();
         }
 
         // open about dialog
