@@ -19,6 +19,10 @@ namespace NZBHags.GUI
             this.collection = collection;
             InitializeComponent();
 
+            // Set form title
+            if(collection.name != null && !collection.name.Equals(""))
+                this.Text = "Details for: " + collection.name;
+
             InitializeImages();
             InitializeTree();
             timer1.Start();

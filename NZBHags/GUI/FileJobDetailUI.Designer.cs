@@ -58,6 +58,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.labelProgress = new System.Windows.Forms.Label();
             this.progressBarParts = new System.Windows.Forms.ProgressBar();
+            this.label10 = new System.Windows.Forms.Label();
+            this.labelTempSaved = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -146,6 +148,8 @@
             // 
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Controls.Add(this.labelTempSaved);
+            this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Controls.Add(this.label12);
             this.groupBox3.Controls.Add(this.labelYPart);
             this.groupBox3.Controls.Add(this.labelYName);
@@ -403,6 +407,26 @@
             this.progressBarParts.Size = new System.Drawing.Size(404, 44);
             this.progressBarParts.TabIndex = 2;
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(8, 171);
+            this.label10.Margin = new System.Windows.Forms.Padding(3);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(48, 13);
+            this.label10.TabIndex = 16;
+            this.label10.Text = "T. Save:";
+            // 
+            // labelTempSaved
+            // 
+            this.labelTempSaved.AutoSize = true;
+            this.labelTempSaved.Location = new System.Drawing.Point(62, 171);
+            this.labelTempSaved.Margin = new System.Windows.Forms.Padding(3);
+            this.labelTempSaved.Name = "labelTempSaved";
+            this.labelTempSaved.Size = new System.Drawing.Size(27, 13);
+            this.labelTempSaved.TabIndex = 17;
+            this.labelTempSaved.Text = "N/A";
+            // 
             // FileJobDetailUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -455,5 +479,7 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label labelYPart;
         private System.Windows.Forms.Label labelYName;
+        private System.Windows.Forms.Label labelTempSaved;
+        private System.Windows.Forms.Label label10;
     }
 }

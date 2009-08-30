@@ -97,8 +97,9 @@ namespace NZBHags
                     }
                     catch (Exception ex)
                     {
-
+                        segment.status = Segment.Status.QUEUED;
                     }
+                    
                     idle = true;
                     currentSegment = null;
                 }
@@ -157,7 +158,7 @@ namespace NZBHags
                 }
                 if (!keepAlive)
                 {
-                    throw new Exception();
+                    throw new Exception("KeepAlive is false"); ;
                 }
                 byte[] returnarray = new byte[read - 3];
                 Array.Copy(buffer, returnarray, read - 3);
@@ -167,7 +168,6 @@ namespace NZBHags
             }
             catch (IOException ex)
             {
-                
                 throw;
             }
             

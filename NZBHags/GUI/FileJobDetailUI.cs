@@ -31,10 +31,13 @@ namespace NZBHags.GUI
             labelProgress.Text = progress;
             
             // Fill segments in list
-            if(job.segments != null)
-            foreach (Segment seg in job.segments)
+            if (job.segments != null && job.segments.Count > 0)
             {
-                listBoxParts.Items.Add(seg);
+                foreach (Segment seg in job.segments)
+                {
+                    listBoxParts.Items.Add(seg);
+                }
+                listBoxParts.SelectedIndex = 0;
             }
 
             // Heading
@@ -50,11 +53,14 @@ namespace NZBHags.GUI
         private void UpdateListBoxParts()
         {
             // TOdo: FIX
-            foreach (object obj in listBoxParts.Items)
+            int topindex = listBoxParts.TopIndex;
+
+            for (int i = 0; i < listBoxParts.Items.Count; i++)
             {
-                int a = 1;
-                int b;
+                object test = listBoxParts.Items[i];
+                listBoxParts.Items[i] = test;
             }
+            listBoxParts.TopIndex = topindex;
         }
 
         public void UpdateUI()
@@ -101,6 +107,7 @@ namespace NZBHags.GUI
             labelYenc.Text = (seg.isYenc) ? "Yes" : "No";
             labelYPart.Text = (seg.YPart == -1) ? "N/A" : seg.YPart + "";
             labelYName.Text = (seg.yname == null) ? "N/A" : seg.yname;
+            labelTempSaved.Text = (seg.tempsaved) ? "Yes " + seg.tempname : "No";
 
         }
 

@@ -79,7 +79,7 @@ namespace NZBHags
                 else
                     stuff += " CRCFAIL";
             }
-            return "(" + id + "/" +  parent.SegmentCount + ") " + stuff;
+            return string.Format("({0:000}/{1:000}) " + stuff, id, parent.SegmentCount);
         }
 
         public void setParent(ref FileJob parent)

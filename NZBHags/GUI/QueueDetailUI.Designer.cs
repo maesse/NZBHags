@@ -69,7 +69,8 @@
             this.ClientSize = new System.Drawing.Size(790, 435);
             this.Controls.Add(this.splitContainer1);
             this.Name = "QueueDetailUI";
-            this.Text = "QueueDetailUI";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Details for Collection";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Closing);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);

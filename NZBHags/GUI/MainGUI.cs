@@ -83,14 +83,15 @@ namespace NZBHags
         // Connect/Disconnect
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            // Connect to server...
+            // disconnect
             if (server.isConnected)
             {
-                for (int i = 0; i < server.connections; i++)
-                {
-                    panel1.Controls.Clear();
+                panel1.Controls.Clear();
+                //for (int i = 0; i < server.connections; i++)
+                //{
                     
-                }
+                    
+                //}
                 dlthreads = null;
                 server.Disconnect();
                 toolStripButton1.Image = NZBHags.Properties.Resources.connect_established;
