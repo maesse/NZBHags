@@ -26,7 +26,7 @@ namespace NZBHags
             
         }
 
-        private string bytesToString(long nBytes)
+        private string bytesToString(float nBytes)
         {
             int sizei = 0;
             while (nBytes > 1024)

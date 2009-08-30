@@ -31,10 +31,13 @@ namespace NZBHags
         public string tempname { get; set; }
 
         public byte[] data { get; set; } // data read (big)
-        public int bytes { get; set; } // bytes read
+        public int bytes { get; set; } // Estimated size
         public int progress { get; set; } // progress in bytes updated from nntpconnection
-        
-        public int ypart { get; set; } // yenc part number
+
+        // yenc part number
+        private int _YPart = -1;
+        public int YPart { get { return _YPart; } set { _YPart = value; } }
+
         public string yname { get; set; } // Filename as described by yenc
 
         public string crc { get; set; } // Expected crc
@@ -59,15 +62,24 @@ namespace NZBHags
             else
             {
                 // CRC failed
-                
                 Logging.Instance.Log("(ValidateCRC) (id=" + id + ") FAILED: Expected crc: " + crc + " - Actual crc: " + calculatedCRC);
                 crcOk = false;
             }
-
-
             return crcOk;
+        }
 
-            
+        public override string ToString()
+        {
+            string stuff = "";
+            stuff += Enum.GetName(typeof(Status), status);
+            if (crc != null)
+            {
+                if (crcOk)
+                    stuff += " CRCOK";
+                else
+                    stuff += " CRCFAIL";
+            }
+            return "(" + id + "/" +  parent.SegmentCount + ") " + stuff;
         }
 
         public void setParent(ref FileJob parent)
@@ -82,7 +94,5 @@ namespace NZBHags
                 data = null;
             }
         }
-
-
     }
 }

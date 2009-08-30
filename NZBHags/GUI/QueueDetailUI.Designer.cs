@@ -45,8 +45,8 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.treeView1);
-            this.splitContainer1.Size = new System.Drawing.Size(604, 357);
-            this.splitContainer1.SplitterDistance = 246;
+            this.splitContainer1.Size = new System.Drawing.Size(790, 435);
+            this.splitContainer1.SplitterDistance = 312;
             this.splitContainer1.TabIndex = 0;
             // 
             // treeView1
@@ -54,7 +54,7 @@
             this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView1.Location = new System.Drawing.Point(0, 0);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(246, 357);
+            this.treeView1.Size = new System.Drawing.Size(312, 435);
             this.treeView1.TabIndex = 0;
             // 
             // timer1
@@ -66,7 +66,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(604, 357);
+            this.ClientSize = new System.Drawing.Size(790, 435);
             this.Controls.Add(this.splitContainer1);
             this.Name = "QueueDetailUI";
             this.Text = "QueueDetailUI";

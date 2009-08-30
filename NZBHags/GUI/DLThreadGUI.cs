@@ -33,7 +33,7 @@ namespace NZBHags.GUI
         public void UpdateUI()
         {
             
-            labelName.Text = "Thread (" + conn.id + "):";
+            labelName.Text = "" + conn.id + ": ";
             if (conn.currentSegment == null)
             {
                 labelFileJob.Text = "Idle";
@@ -47,7 +47,7 @@ namespace NZBHags.GUI
                     progressBar1.Maximum = conn.currentSegment.progress;
 
                 progressBar1.Value = conn.currentSegment.progress;
-                labelFileJob.Text = conn.currentSegment.parent.filename + "(p:" + conn.currentSegment.id + ")";
+                labelFileJob.Text = "(" + conn.currentSegment.id + "/" + conn.currentSegment.parent.segments.Count + ")" +conn.currentSegment.parent.filename;
             }
         }
     }

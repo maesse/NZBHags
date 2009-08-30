@@ -153,7 +153,8 @@ namespace NZBHags
                     return null;
                 }
                 FileCollection coll = (FileCollection)collections[0];
-                currentFileJob = coll.files[coll.FileProgress++];
+
+                currentFileJob = coll.GetNextFileJob();//coll.files[coll.FileProgress++];
             }
             lock (this)
             {
@@ -164,10 +165,10 @@ namespace NZBHags
                     {
                         foreach (FileCollection col in collections)
                         {
-                            if (col.status != CollectionStatus.PAUSE && (col.FileCount - col.FileProgress) > 0)
+                            if (col.status != CollectionStatus.PAUSE && col.FilesLeft > 0)
                             {
                                 col.status = CollectionStatus.DOWNLOADING;
-                                currentFileJob = (FileJob)col.files[col.FileProgress++];
+                                currentFileJob = col.GetNextFileJob();//(FileJob)col.files[col.FileProgress++];
                                 break;
                             }
                         }

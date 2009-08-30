@@ -167,6 +167,7 @@ namespace NZBHags
             }
             catch (IOException ex)
             {
+                
                 throw;
             }
             

@@ -23,7 +23,12 @@ namespace NZBHags
                 System.Console.WriteLine(str);
                 if (maingui != null)
                 {
-                    maingui.logTextBox.Invoke(maingui.logHandler, str);
+                    try
+                    {
+                        maingui.logTextBox.Invoke(maingui.logHandler, str);
+                    } catch(Exception ex) {
+                        // Might throw somethign when exiting
+                    }
                    // maingui.logHandler.Invoke(str);
                     // Fire delegate
                 }

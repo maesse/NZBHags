@@ -40,12 +40,16 @@ namespace NZBHags.GUI
                 
             }
 
+            treeView1.AfterSelect += new TreeViewEventHandler(treeView1_AfterSelect);
+
             TreeNode main = new TreeNode();
             main.Text = collection.name;
             
             foreach (FileJob job in collection.files)
             {
                 TreeNode jobnode = new TreeNode(job.filename);
+                jobnode.Name = "J";
+                jobnode.Tag = job;
                 if (job.complete)
                 {
                     jobnode.ImageIndex = 1;
@@ -59,6 +63,7 @@ namespace NZBHags.GUI
                 foreach(Segment seg in job.segments) 
                 {
                     TreeNode segnode = new TreeNode("Segment "+seg.id + " - bytes: " + seg.bytes);
+                    segnode.Name = "S";
                     if (seg.progress > 0)
                     {
                         segnode.ImageIndex = 1;
@@ -78,7 +83,23 @@ namespace NZBHags.GUI
             treeView1.Nodes.Add(main) ;
         }
 
-        public void UpdateTree() {
+        // Shows filejob if selected
+        void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            if (e.Node.Name.Equals("J"))
+            {
+                if (splitContainer1.Panel2.Controls.Count > 0)
+                    splitContainer1.Panel2.Controls.Clear();
+
+                splitContainer1.Panel2.Controls.Add(new FileJobDetailUI((FileJob)e.Node.Tag));
+                splitContainer1.Panel2.Controls[0].Dock = DockStyle.Fill;
+            }
+            int a;
+        }
+
+        private void UpdateTree()
+        {
+
             for (int i = 0; i < collection.files.Count; i++)
             {
                 FileJob job = collection.files[i];
@@ -99,13 +120,27 @@ namespace NZBHags.GUI
                     jobnode.ImageIndex = 1;
                     jobnode.SelectedImageIndex = 1;
                 }
-                    
+
             }
+        }
+
+        private void UpdateSubPanel()
+        {
+            if (splitContainer1.Panel2.Controls.Count == 1)
+            {
+                IUpdateable ui = (IUpdateable)splitContainer1.Panel2.Controls[0];
+                ui.UpdateUI();
+            }
+        }
+
+        public void UpdateUI() {
+            UpdateTree();
+            UpdateSubPanel();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            UpdateTree();
+            UpdateUI();
         }
 
         private void Closing(object sender, FormClosingEventArgs e)

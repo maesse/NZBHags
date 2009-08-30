@@ -25,10 +25,27 @@ namespace NZBHags
         public ulong ProgressKB; // kb
         public int FileCount { get { return (files != null) ? files.Count : 0; } }
         private int _FileProgress = 0;
+        public int FilesLeft { get { return FileCount - _FileProgress; } }
         public int FileProgress { get { return _FileProgress;  } set { _FileProgress = value; } } // 0 -> files.Count
         public int id { get; set; }
         //public Queue queue { get; set; }
         public CollectionStatus status { get; set; }
+
+        public FileJob GetNextFileJob()
+        {
+            // Sort and update progress
+            files.Sort(new FileJobComparer());
+            int nQueue = 0;
+            foreach (FileJob job in files)
+            {
+                if (job.status == FileJobStatus.QUEUED)
+                {
+                    return job;
+                }
+            }
+            int a;
+            return null;
+        }
 
         public FileCollection(string name, List<FileJob> files)
         {

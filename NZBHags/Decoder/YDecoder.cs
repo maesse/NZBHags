@@ -87,9 +87,9 @@ namespace NZBHags
                     segment.parent.filename = segment.yname;
                     if (header.Contains("part="))
                     {
-                        segment.ypart = int.Parse(getValue(header, "part"));
-                        if (segment.ypart > segment.parent.yparts)
-                            segment.parent.yparts = segment.ypart;
+                        segment.YPart = int.Parse(getValue(header, "part"));
+                        if (segment.YPart > segment.parent.yparts)
+                            segment.parent.yparts = segment.YPart;
 
                         string partheader = ReadLine(ms);
                         if (partheader.Contains("=ypart ") && partheader.Contains("begin=") && partheader.Contains("end="))
@@ -153,7 +153,7 @@ namespace NZBHags
                             if (buffer[0] == 'y')
                             {
                                 string yend = ReadLine(ms);
-                                if (segment.ypart != 0)
+                                if (segment.YPart != 0)
                                     segment.crc = getValue(yend, "pcrc32");
                                 else
                                     segment.crc = getValue(yend, "crc32");

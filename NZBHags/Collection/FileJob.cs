@@ -7,6 +7,13 @@ using System.IO;
 
 namespace NZBHags
 {
+    public enum FileJobStatus
+    {
+        QUEUED,
+        DOWNLOADING,
+        WRITING,
+        COMPLETE
+    }
     public class FileJob
     {
         public FileCollection parent { get; set; }
@@ -31,6 +38,7 @@ namespace NZBHags
         public string outputfilename { get; set; }
         
         // Progress
+        public FileJobStatus status { get; set; }
         public int saveprogress { get; set; } // filepart(s) written
         public bool complete { get; set; } // completed downloading+extracting
         public long byteprogress { get; set; } // bytes written, not used ATM
@@ -38,6 +46,7 @@ namespace NZBHags
 
         public FileJob(ref FileCollection parent)
         {
+            status = FileJobStatus.QUEUED;
             saveprogress = 0;
             this.parent = parent;
             Random random = new Random();

@@ -77,8 +77,8 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 118F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 34F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 89F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 98F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 87F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel1.Controls.Add(this.progressBar, 2, 0);
@@ -122,7 +122,7 @@
             this.labelTimeleft.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelTimeleft.Location = new System.Drawing.Point(320, 20);
             this.labelTimeleft.Name = "labelTimeleft";
-            this.labelTimeleft.Size = new System.Drawing.Size(83, 13);
+            this.labelTimeleft.Size = new System.Drawing.Size(81, 13);
             this.labelTimeleft.TabIndex = 12;
             this.labelTimeleft.Text = "TimeLeft";
             // 
@@ -258,13 +258,13 @@
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel4.Controls.Add(this.labelMb, 0, 1);
             this.tableLayoutPanel4.Controls.Add(this.MBDone, 0, 0);
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(406, 0);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(404, 0);
             this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15.09434F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 84.90566F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(98, 53);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(100, 53);
             this.tableLayoutPanel4.TabIndex = 25;
             // 
             // labelMb
@@ -275,7 +275,7 @@
             this.labelMb.Location = new System.Drawing.Point(3, 21);
             this.labelMb.Margin = new System.Windows.Forms.Padding(3, 0, 3, 6);
             this.labelMb.Name = "labelMb";
-            this.labelMb.Size = new System.Drawing.Size(92, 13);
+            this.labelMb.Size = new System.Drawing.Size(94, 13);
             this.labelMb.TabIndex = 8;
             this.labelMb.Text = "MB Left";
             // 

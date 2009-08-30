@@ -63,6 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collection\FileJobComparer.cs" />
     <Compile Include="Decoder\CRC32Hasher.cs" />
     <Compile Include="GUI\DLThreadGUI.cs">
       <SubType>UserControl</SubType>
@@ -75,6 +76,12 @@
     </Compile>
     <Compile Include="GUI\EmptyQueue.Designer.cs">
       <DependentUpon>EmptyQueue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FileJobDetailUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\FileJobDetailUI.Designer.cs">
+      <DependentUpon>FileJobDetailUI.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\GeneralSettingsGUI.cs">
       <SubType>UserControl</SubType>
@@ -100,15 +107,16 @@
     <Compile Include="GUI\UIShutdown.Designer.cs">
       <DependentUpon>UIShutdown.cs</DependentUpon>
     </Compile>
-    <Compile Include="lib\AboutBox1.cs">
+    <Compile Include="GUI\AboutBox1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="lib\AboutBox1.Designer.cs">
+    <Compile Include="GUI\AboutBox1.Designer.cs">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
     <Compile Include="lib\CredentialList.cs" />
-    <Compile Include="FileCollection.cs" />
-    <Compile Include="FileJob.cs" />
+    <Compile Include="Collection\FileCollection.cs" />
+    <Compile Include="Collection\FileJob.cs" />
+    <Compile Include="lib\IUpdateable.cs" />
     <Compile Include="lib\IUpdatingControl.cs" />
     <Compile Include="lib\Logging.cs" />
     <Compile Include="GUI\FolderSettingsGUI.cs">
@@ -124,15 +132,16 @@
     <Compile Include="GUI\MainGUI.Designer.cs">
       <DependentUpon>MainGUI.cs</DependentUpon>
     </Compile>
-    <Compile Include="NewsServer.cs" />
-    <Compile Include="NNTPConnection.cs" />
+    <Compile Include="lib\Misc.cs" />
+    <Compile Include="Network\NewsServer.cs" />
+    <Compile Include="Network\NNTPConnection.cs" />
     <Compile Include="GUI\NNTPServerSettingsGUI.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="GUI\NNTPServerSettingsGUI.Designer.cs">
       <DependentUpon>NNTPServerSettingsGUI.cs</DependentUpon>
     </Compile>
-    <Compile Include="NZBFileHandler.cs" />
+    <Compile Include="Decoder\NZBFileHandler.cs" />
     <Compile Include="lib\Program.cs" />
     <Compile Include="Par2Handler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -142,6 +151,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\EmptyQueue.resx">
       <DependentUpon>EmptyQueue.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FileJobDetailUI.resx">
+      <DependentUpon>FileJobDetailUI.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\GeneralSettingsGUI.resx">
@@ -160,7 +173,7 @@
       <DependentUpon>UIShutdown.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="lib\AboutBox1.resx">
+    <EmbeddedResource Include="GUI\AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -207,8 +220,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="QueueHandler.cs" />
-    <Compile Include="Segment.cs" />
-    <Compile Include="SegmentComparer.cs" />
+    <Compile Include="Collection\Segment.cs" />
+    <Compile Include="Collection\SegmentComparer.cs" />
     <Compile Include="GUI\SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -216,7 +229,7 @@
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="lib\StopWatch.cs" />
-    <Compile Include="lib\XmlFileResolver.cs" />
+    <Compile Include="Decoder\XmlFileResolver.cs" />
     <Compile Include="GUI\QueueControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
